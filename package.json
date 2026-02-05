@@ -1,0 +1,22 @@
+{
+  "name": "nodejs-pro",
+  "version": "1.0.0",
+  "description": "nodejs -pro ",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MnhWuanz/nodejs-pro.git"
+  },
+  "keywords": [
+    "nodejs"
+  ],
+  "author": "MnhQuan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MnhWuanz/nodejs-pro/issues"
+  },
+  "homepage": "https://github.com/MnhWuanz/nodejs-pro#readme"
+}
