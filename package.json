@@ -33,9 +33,11 @@
   "homepage": "https://github.com/MnhWuanz/nodejs-pro#readme",
   "dependencies": {
     "dotenv": "16.4.7",
+    "ejs": "3.1.10",
     "express": "^5.2.1"
   },
   "devDependencies": {
+    "@types/ejs": "3.1.5",
     "@types/express": "5.0.0",
     "@types/node": "^25.2.0",
     "nodemon": "3.1.9",
