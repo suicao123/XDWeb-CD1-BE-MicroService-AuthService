@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/MnhWuanz/nodejs-pro/issues"
   },
-  "homepage": "https://github.com/MnhWuanz/nodejs-pro#readme"
+  "homepage": "https://github.com/MnhWuanz/nodejs-pro#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
 }
