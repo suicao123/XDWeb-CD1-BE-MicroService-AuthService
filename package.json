@@ -5,9 +5,18 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc && node dist/app.js",
-    "dev": "tsc && node dist/app.js"
-
+    "start": "nodemon",
+    "dev": "nodemon"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "src"
+    ],
+    "ext": "ts",
+    "ignore": [
+      "node_modules"
+    ],
+    "exec": "ts-node ./src/app.ts"
   },
   "repository": {
     "type": "git",
@@ -23,11 +32,14 @@
   },
   "homepage": "https://github.com/MnhWuanz/nodejs-pro#readme",
   "dependencies": {
+    "dotenv": "16.4.7",
     "express": "^5.2.1"
   },
   "devDependencies": {
     "@types/express": "5.0.0",
     "@types/node": "^25.2.0",
+    "nodemon": "3.1.9",
+    "ts-node": "10.9.2",
     "typescript": "5.7.3"
   }
 }
