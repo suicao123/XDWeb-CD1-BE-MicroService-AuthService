@@ -21,17 +21,12 @@ const getAllUsers = async () => {
   return users;
 };
 const handelDeleteUser = async (id: string) => {
-  try {
-    const connection = await getConectTion();
-    const sql = 'DELETE FROM `users` WHERE `id` = ? LIMIT 1';
-    const values = [id];
-
-    const [result, fields] = await connection.execute(sql, values);
-    return result;
-  } catch (error) {
-    console.log(error);
-    return [];
-  }
+  const deleteUser = await prisma.user.delete({
+    where: {
+      id: +id,
+    },
+  });
+  return deleteUser;
 };
 const handelGetUserById = async (id: string) => {
   const user = await prisma.user.findUnique({
