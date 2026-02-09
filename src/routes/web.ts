@@ -3,7 +3,7 @@ import {
   getHomePage,
   getUserPage,
   postCreateUser,
-} from '../controllers/user.controller';
+} from 'controllers/user.controller';
 
 const router = express.Router();
 const webRoutes = (app: Express) => {
@@ -13,7 +13,6 @@ const webRoutes = (app: Express) => {
 
   router.post('/handel-create-user', postCreateUser);
 
-  
   app.use('/', router);
 };
 export default webRoutes;

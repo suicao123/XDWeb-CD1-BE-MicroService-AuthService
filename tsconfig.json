@@ -6,6 +6,14 @@
     "sourceMap": true,
     "skipLibCheck": true,
     "outDir": "dist",
-    "rootDir": "src"
+    "rootDir": "src", // phục vụ build typescrippt sang javascript ( quyết định file nào build file nào,và cấu trúc như thế nào )
+    "baseUrl": ".", // định nghĩa đường dẫn của file xuất phát từ đâu  absolute path)
+    "paths": {
+      "config/*": ["./src/config/*"],
+      "controllers/*": ["./src/controllers/*"],
+      "models/*": ["./src/models/*"],
+      "routes/*": ["./src/routes/*"],
+      "services/*": ["./src/services/*"]
+    }
   }
 }
