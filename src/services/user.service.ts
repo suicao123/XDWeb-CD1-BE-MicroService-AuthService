@@ -42,4 +42,16 @@ const handelDeleteUser = async (id: string) => {
     return [];
   }
 };
-export { handleCreateUser, getAllUsers, handelDeleteUser };
+const handelGetUserById = async (id: string) => {
+  try {
+    const connection = await getConectTion();
+    const sql = 'SELECT * FROM `users` WHERE `id`= ?';
+    const values = [id];
+    const [result, fields] = await connection.execute(sql, values);
+    return result[0];
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};
+export { handleCreateUser, getAllUsers, handelDeleteUser, handelGetUserById };

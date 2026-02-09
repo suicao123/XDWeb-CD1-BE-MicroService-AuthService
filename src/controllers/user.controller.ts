@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import {
   getAllUsers,
   handelDeleteUser,
+  handelGetUserById,
   handleCreateUser,
 } from 'services/user.service';
 
@@ -25,9 +26,25 @@ const postCreateUser = async (req: Request, res: Response) => {
 };
 const postDeleteUser = async (req: Request, res: Response) => {
   const { id } = req.params;
+
   await handelDeleteUser(id as string);
-  
+
   return res.redirect('/');
 };
+const getViewUser = async (req: Request, res: Response) => {
+  const { id } = req.params;
 
-export { getHomePage, getUserPage, postCreateUser, postDeleteUser };
+  //get user by id
+  const user = await handelGetUserById(id as string);
+  return res.render('view-user', {
+    id: id,
+    user: user,
+  });
+};
+export {
+  getHomePage,
+  getUserPage,
+  postCreateUser,
+  postDeleteUser,
+  getViewUser,
+};
