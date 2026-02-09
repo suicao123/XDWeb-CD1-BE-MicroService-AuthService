@@ -12,6 +12,8 @@ const webRoutes = (app: Express) => {
   router.get('/create-user', getUserPage);
 
   router.post('/handel-create-user', postCreateUser);
+
+  
   app.use('/', router);
 };
 export default webRoutes;

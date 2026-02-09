@@ -16,9 +16,37 @@
     ></script>
   </head>
   <body>
-    <h1>Hello from ejs from controller</h1>
-    <!-- <img src="images/hoidanit.png" alt="" srcset="" /> -->
-
-    <a class="btn btn-primary" href="/create-user">Create new user</a>
+    <div style="margin: 25px" class="">
+      <div class="d-flex justify-content-between align-content-center">
+        <h1>List User: <%= name %></h1>
+        <!-- <img src="images/hoidanit.png" alt="" srcset="" /> -->
+        <div class="">
+          <a class="btn btn-primary" href="/create-user">Create new user</a>
+        </div>
+      </div>
+      <hr />
+      <div class="">
+        <table class="table table-hover table-bordered">
+          <thead>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>Action</th>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Alfreds Futterkiste</td>
+              <td>Maria Anders</td>
+              <td>Germany</td>
+              <td>Germany</td>
+              <td>
+                <button class="btn btn-danger">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </body>
 </html>
