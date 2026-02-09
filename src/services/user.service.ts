@@ -6,8 +6,9 @@ const handleCreateUser = async (
   address: string,
 ) => {
   //insert into dataBase
-  const connection = await getConectTion();
+
   try {
+    const connection = await getConectTion();
     const sql =
       'INSERT INTO `users`(`name`, `email`,`address`) VALUES (?, ?, ?)';
     const values = [name, email, address];
@@ -17,12 +18,10 @@ const handleCreateUser = async (
     console.log(err);
     return [];
   }
-
-  console.log('>>> insert a new user');
 };
 const getAllUsers = async () => {
-  const connection = await getConectTion();
   try {
+    const connection = await getConectTion();
     const [results, fields] = await connection.query('SELECT * FROM `users` ');
     return results;
   } catch (err) {
@@ -30,4 +29,17 @@ const getAllUsers = async () => {
     return [];
   }
 };
-export { handleCreateUser, getAllUsers };
+const handelDeleteUser = async (id: string) => {
+  try {
+    const connection = await getConectTion();
+    const sql = 'DELETE FROM `users` WHERE `id` = ? LIMIT 1';
+    const values = [id];
+
+    const [result, fields] = await connection.execute(sql, values);
+    return result;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};
+export { handleCreateUser, getAllUsers, handelDeleteUser };
