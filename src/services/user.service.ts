@@ -54,4 +54,30 @@ const handelGetUserById = async (id: string) => {
     return [];
   }
 };
-export { handleCreateUser, getAllUsers, handelDeleteUser, handelGetUserById };
+const handelUpdateUser = async (
+  id: string,
+  name: string,
+  email: string,
+  addres: string,
+) => {
+  try {
+    const connection = await getConectTion();
+    const sql =
+      'UPDATE `users` SET `name` = ? , `email` = ? , `address` = ? WHERE `id` = ? LIMIT 1';
+    const values = [name, email, addres, id];
+
+    const [result, fields] = await connection.execute(sql, values);
+
+    return result;
+  } catch (err) {
+    console.log(err);
+    return [];
+  }
+};
+export {
+  handleCreateUser,
+  getAllUsers,
+  handelDeleteUser,
+  handelGetUserById,
+  handelUpdateUser,
+};

@@ -17,9 +17,9 @@
   </head>
   <body>
     <div class="container">
-      <form action="/handel-create-user" method="post">
+      <form action="/handel-update-user" method="post">
         <h3 class="mb-3">View detail a user id = <%= id %></h3>
-
+        <input type="text" value="<%= id %>" name="id" hidden />
         <div class="mb-3">
           <label class="form-label">Name</label>
           <input
@@ -44,13 +44,11 @@
         <div class="mb-3">
           <label class="form-label">Address</label>
           <textarea name="address" class="form-control" rows="2">
-<%= user.address %></textarea
+<%=user.address%></textarea
           >
         </div>
         <div class="mb-3">
-          <form action="/">
-            <button class="btn btn-warning" type="submit">Back</button>
-          </form>
+          <button class="btn btn-warning" type="submit">Update</button>
         </div>
       </form>
     </div>

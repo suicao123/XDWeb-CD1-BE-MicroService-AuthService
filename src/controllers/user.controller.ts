@@ -3,6 +3,7 @@ import {
   getAllUsers,
   handelDeleteUser,
   handelGetUserById,
+  handelUpdateUser,
   handleCreateUser,
 } from 'services/user.service';
 
@@ -41,10 +42,18 @@ const getViewUser = async (req: Request, res: Response) => {
     user: user,
   });
 };
+const postUpdateUser = async (req: Request, res: Response) => {
+  const { id, name, email, address } = req.body;
+
+  await handelUpdateUser(id, name, email, address);
+
+  return res.redirect('/');
+};
 export {
   getHomePage,
   getUserPage,
   postCreateUser,
   postDeleteUser,
   getViewUser,
+  postUpdateUser,
 };
