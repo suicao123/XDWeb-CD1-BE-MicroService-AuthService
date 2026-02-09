@@ -34,16 +34,12 @@ const handelDeleteUser = async (id: string) => {
   }
 };
 const handelGetUserById = async (id: string) => {
-  try {
-    const connection = await getConectTion();
-    const sql = 'SELECT * FROM `users` WHERE `id`= ?';
-    const values = [id];
-    const [result, fields] = await connection.execute(sql, values);
-    return result[0];
-  } catch (error) {
-    console.log(error);
-    return [];
-  }
+  const user = await prisma.user.findUnique({
+    where: {
+      id: +id,
+    },
+  });
+  return user;
 };
 const handelUpdateUser = async (
   id: string,
@@ -51,19 +47,17 @@ const handelUpdateUser = async (
   email: string,
   addres: string,
 ) => {
-  try {
-    const connection = await getConectTion();
-    const sql =
-      'UPDATE `users` SET `name` = ? , `email` = ? , `address` = ? WHERE `id` = ? LIMIT 1';
-    const values = [name, email, addres, id];
-
-    const [result, fields] = await connection.execute(sql, values);
-
-    return result;
-  } catch (err) {
-    console.log(err);
-    return [];
-  }
+  const updateUser = await prisma.user.update({
+    where: {
+      id: +id,
+    },
+    data: {
+      name: name,
+      email: email,
+      address: addres,
+    },
+  });
+  return updateUser;
 };
 export {
   handleCreateUser,
