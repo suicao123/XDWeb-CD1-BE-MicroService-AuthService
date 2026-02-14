@@ -38,9 +38,9 @@
               <% users.forEach( function (user) { %>
               <tr>
                     <td><%= user.id %></td>
-                    <td><%= user.name %></td>
-                    <td><%= user.email %></td>
-                    <td><%= user.address %></td>
+                    <td><%= user.fullname %></td>
+                    <td><%= user.username %></td>
+                    <td><%= user.accountType %></td>
                     <td class="d-flex gap-2">
                       <form action="/handelDeleteUser/<%= user.id %>" method="post">
                         <button class="btn btn-danger" type="submit" >Delete</button>
