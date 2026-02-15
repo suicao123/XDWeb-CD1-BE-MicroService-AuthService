@@ -1,6 +1,4 @@
 import express, { Express } from 'express';
-var multer = require('multer');
-var upload = multer({ dest: 'uploads/' });
 import {
   getHomePage,
   getCreateUserPage,
@@ -15,6 +13,7 @@ import {
   getAdminUserPage,
   getDashboardPage,
 } from 'controllers/admin/dashboard.controller';
+import fileUploadMiddleware from 'src/middleware/multer';
 
 const router = express.Router();
 const webRoutes = (app: Express) => {
@@ -43,10 +42,8 @@ const webRoutes = (app: Express) => {
 
   router.post(
     '/admin/handel-create-user',
-    upload.single('avatar'),
-    (req, res) => {
-      res.send('oke');
-    },
+    fileUploadMiddleware('avatar', 'images'),
+    postCreateUser,
   );
 
   app.use('/', router);
