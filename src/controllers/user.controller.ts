@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import {
+  getAllRoles,
   getAllUsers,
   handelDeleteUser,
   handelGetUserById,
@@ -15,8 +16,11 @@ const getHomePage = async (req: Request, res: Response) => {
   });
 };
 
-const getUserPage = (req: Request, res: Response) => {
-  return res.render('admin/user/create');
+const getCreateUserPage = async (req: Request, res: Response) => {
+  const roles = await getAllRoles();
+  return res.render('admin/user/create', {
+    roles,
+  });
 };
 const postCreateUser = async (req: Request, res: Response) => {
   const { name, email, address } = req.body;
@@ -51,7 +55,7 @@ const postUpdateUser = async (req: Request, res: Response) => {
 };
 export {
   getHomePage,
-  getUserPage,
+  getCreateUserPage,
   postCreateUser,
   postDeleteUser,
   getViewUser,
