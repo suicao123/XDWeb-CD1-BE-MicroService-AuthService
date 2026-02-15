@@ -7,6 +7,10 @@ import {
   getViewUser,
   postUpdateUser,
 } from 'controllers/user.controller';
+import {
+  getAdminUserPage,
+  getDashboardPage,
+} from 'controllers/admin/dashboard.controller';
 
 const router = express.Router();
 const webRoutes = (app: Express) => {
@@ -21,6 +25,11 @@ const webRoutes = (app: Express) => {
   router.get('/handelViewUser/:id', getViewUser);
 
   router.post('/handel-update-user', postUpdateUser);
+
+  //admin routes
+  router.get('/admin', getDashboardPage);
+
+  router.get('/admin/user', getAdminUserPage);
 
   app.use('/', router);
 };
