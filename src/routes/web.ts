@@ -37,6 +37,7 @@ const webRoutes = (app: Express) => {
 
   router.get('/admin/product', getAdminProductPage);
   router.get('/admin/create-user', getCreateUserPage);
+  router.post('/admin/handel-create-user', postCreateUser);
 
   app.use('/', router);
 };
