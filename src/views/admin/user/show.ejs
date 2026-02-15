@@ -10,10 +10,6 @@
     <meta name="description" content="Hỏi Dân IT - Dự án laptopshop" />
     <meta name="author" content="Hỏi Dân IT" />
     <title>Manager User - Hỏi Dân IT</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css"
-      rel="stylesheet"
-    />
     <link href="/admin/css/styles.css" rel="stylesheet" />
     <script
       src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
@@ -27,7 +23,50 @@
       <%- include("../layout/sidenav"); -%>
       <div id="layoutSidenav_content">
         <main>
-          <div class="container-fluid px-4">Manager User</div>
+          <div class="container-fluid px-4">
+            <h1 class="mt-4">Manage Users</h1>
+            <ol class="breadcrumb mb-4">
+              <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
+              <li class="breadcrumb-item active">Users</li>
+            </ol>
+            <div class="d-flex justify-content-between align-content-center">
+            <h1>Table User: </h1>
+            <!-- <img src="images/hoidanit.png" alt="" srcset="" /> -->
+            <div class="">
+              <a class="btn btn-primary" href="/admin/create-user">Create new user</a>
+            </div>
+          </div>
+          <hr />
+            <div>
+              <table class="table table-hover table-bordered">
+                <thead>
+                  <th>Id</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Address</th>
+                  <th>Action</th>
+                </thead>
+                <tbody>
+                    <% users.forEach( function (user) { %>
+                    <tr>
+                          <td><%= user.id %></td>
+                          <td><%= user.fullname %></td>
+                          <td><%= user.username %></td>
+                          <td><%= user.accountType %></td>
+                          <td class="d-flex gap-2">
+                            <form action="/handelDeleteUser/<%= user.id %>" method="post">
+                              <button class="btn btn-danger" type="submit" >Delete</button>
+                            </form>
+                            <form action="/handelViewUser/<%= user.id %>" method="get">
+                              <button class="btn btn-warning" type="submit" >View</button>
+                            </form>
+                          </td>
+                    </tr>
+              <% }) %>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </main>
         <%- include("../layout/footer"); -%>
       </div>
@@ -38,16 +77,5 @@
       crossorigin="anonymous"
     ></script>
     <script src="/admin/js/scripts.js"></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"
-      crossorigin="anonymous"
-    ></script>
-    <script src="/admin/assets/demo/chart-area-demo.js"></script>
-    <script src="/admin/assets/demo/chart-bar-demo.js"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
-      crossorigin="anonymous"
-    ></script>
-    <script src="/admin/js/datatables-simple-demo.js"></script>
   </body>
 </html>

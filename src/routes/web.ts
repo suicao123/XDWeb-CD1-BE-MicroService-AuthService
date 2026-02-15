@@ -8,6 +8,8 @@ import {
   postUpdateUser,
 } from 'controllers/user.controller';
 import {
+  getAdminOrderPage,
+  getAdminProductPage,
   getAdminUserPage,
   getDashboardPage,
 } from 'controllers/admin/dashboard.controller';
@@ -30,6 +32,11 @@ const webRoutes = (app: Express) => {
   router.get('/admin', getDashboardPage);
 
   router.get('/admin/user', getAdminUserPage);
+
+  router.get('/admin/order', getAdminOrderPage);
+
+  router.get('/admin/product', getAdminProductPage);
+  router.get('/admin/create-user', getUserPage);
 
   app.use('/', router);
 };
