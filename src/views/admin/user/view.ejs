@@ -15,6 +15,17 @@
       src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
       crossorigin="anonymous"
     ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+     <script>
+                    $(document).ready(() => {
+                        const avatarFile = $("#avatarFile");
+                        avatarFile.change(function (e) {
+                            const imgURL = URL.createObjectURL(e.target.files[0]);
+                            $("#avatarPreview").attr("src", imgURL);
+                            $("#avatarPreview").css({ "display": "block" });
+                        });
+                    });
+      </script>
   </head>
 
   <body class="sb-nav-fixed">
@@ -37,12 +48,12 @@
               <div class="col-6 mx-auto">
                 <div class="">
                   <form
-                    action="/admin/handel-create-user"
+                    action="/admin/handel-update-user"
                     enctype="multipart/form-data"
                     method="post"
                   >
                     <h5 class="mb-3">Detail a user:</h5>
-
+                    <input type="text" value="<%= id %>" name="id" hidden />
                     <div class="mb-3">
                       <label class="form-label">Full Name</label>
                       <input
@@ -50,7 +61,7 @@
                         type="text"
                         class="form-control"
                         placeholder="Your name"
-                        value="<%= user.fullName %>"
+                        value="<%=user.fullName %>"
                       />
                     </div>
                     <div class="mb-3">
@@ -95,11 +106,23 @@
                         accept=".png, .jpg, .jpeg"
                       />
                     </div>
-                    <img
+               
+                    <% if (user.avatar) { %>
+                            <img
+                      style="max-height: 250px; display: block"
+                      src="/images/<%-user.avatar %>"
+                      alt="avatar preview"
+                      id="avatarPreview"
+                    />
+                          <% } else { %>
+                            <img
                       style="max-height: 250px; display: none"
                       alt="avatar preview"
                       id="avatarPreview"
                     />
+                          <% } %>
+
+                    
                     <div class="mb-3">
                       <label class="form-label">Address</label>
                       <textarea name="address" class="form-control" rows="2">

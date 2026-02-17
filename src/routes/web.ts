@@ -39,6 +39,11 @@ const webRoutes = (app: Express) => {
   router.get('/admin/product', getAdminProductPage);
   router.get('/admin/create-user', getCreateUserPage);
   router.get('/admin/handelViewUser/:id', getViewUser);
+  router.post(
+    '/admin/handel-update-user',
+    fileUploadMiddleware('avatar', 'images'),
+    postUpdateUser,
+  );
 
   //  router.post('/admin/handel-create-user', postCreateUser);
   router.post('/admin/handelDeleteUser/:id', postDeleteUser);

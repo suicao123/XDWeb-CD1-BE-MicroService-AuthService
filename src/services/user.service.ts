@@ -55,20 +55,27 @@ const handelGetUserById = async (id: string) => {
 };
 const handelUpdateUser = async (
   id: string,
-  name: string,
-  email: string,
+  fullname: string,
+  username: string,
   addres: string,
+  phone: string,
+  role: string,
+  avatar: string,
 ) => {
+  const hashPass = await hashPassWord('123456');
   const updateUser = await prisma.user.update({
     where: {
       id: +id,
     },
     data: {
-      fullName: name,
-      username: email,
+      fullName: fullname,
+      username: username,
       address: addres,
-      password: '',
-      accountType: '',
+      password: hashPass,
+      accountType: ACCOUNT_TYPE.SYSTEM,
+      phone: phone,
+      roleId: +role,
+      ...(avatar !== undefined && { avatar: avatar }),
     },
   });
   return updateUser;

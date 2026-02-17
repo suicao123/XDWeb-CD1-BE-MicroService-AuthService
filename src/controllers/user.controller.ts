@@ -58,11 +58,12 @@ const getViewUser = async (req: Request, res: Response) => {
   });
 };
 const postUpdateUser = async (req: Request, res: Response) => {
-  const { id, name, email, address } = req.body;
+  const { id, fullname, username, address, phone, role } = req.body;
+  const file = req.file;
+  const avatar = file?.filename ?? undefined;
+  await handelUpdateUser(id, fullname, username, address, phone, role, avatar);
 
-  const result = await handelUpdateUser(id, name, email, address);
-
-  return res.redirect('/');
+  return res.redirect('/admin/user');
 };
 export {
   getHomePage,
