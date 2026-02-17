@@ -34,6 +34,7 @@ const postCreateUser = async (req: Request, res: Response) => {
     address,
     phone,
     avatar,
+    role,
   );
 
   return res.redirect('/admin/user');
