@@ -54,10 +54,10 @@
                           <td><%= user.username %></td>
                           <td><%= user.accountType %></td>
                           <td class="d-flex gap-2">
-                            <form action="/handelDeleteUser/<%= user.id %>" method="post">
+                            <form action="/admin/handelDeleteUser/<%= user.id %>" method="post">
                               <button class="btn btn-danger" type="submit" >Delete</button>
                             </form>
-                            <form action="/handelViewUser/<%= user.id %>" method="get">
+                            <form action="/admin/handelViewUser/<%= user.id %>" method="get">
                               <button class="btn btn-warning" type="submit" >View</button>
                             </form>
                           </td>

@@ -42,18 +42,19 @@ const postCreateUser = async (req: Request, res: Response) => {
 const postDeleteUser = async (req: Request, res: Response) => {
   const { id } = req.params;
 
-  const result = await handelDeleteUser(id as string);
+  await handelDeleteUser(id as string);
 
-  return res.redirect('/');
+  return res.redirect('/admin/user');
 };
 const getViewUser = async (req: Request, res: Response) => {
   const { id } = req.params;
-
+  const roles = await getAllRoles();
   //get user by id
   const user = await handelGetUserById(id as string);
-  return res.render('view-user', {
+  return res.render('admin/user/view', {
     id: id,
     user: user,
+    roles,
   });
 };
 const postUpdateUser = async (req: Request, res: Response) => {

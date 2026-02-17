@@ -23,7 +23,7 @@ const handleCreateUser = async (
       accountType: ACCOUNT_TYPE.SYSTEM,
       avatar: avatar,
       phone: phone,
-      roleId: +role, 
+      roleId: +role,
     },
   });
   return newUser;
