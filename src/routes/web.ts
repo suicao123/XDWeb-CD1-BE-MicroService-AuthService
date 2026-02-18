@@ -17,7 +17,10 @@ import fileUploadMiddleware from 'src/middleware/multer';
 import { getProductPage } from 'controllers/client/product.controller';
 import {
   getCreateProductPage,
+  getViewProdcut,
   postCreateProductPage,
+  postDeleteProduct,
+  postUpdateProduct,
 } from 'controllers/admin/product.controller';
 
 const router = express.Router();
@@ -63,6 +66,13 @@ const webRoutes = (app: Express) => {
     fileUploadMiddleware('image', 'images/products'),
     postCreateProductPage,
   );
+  router.get('/admin/handelViewProduct/:id', getViewProdcut);
+  router.post(
+    '/admin/update-product',
+    fileUploadMiddleware('image', 'images/products'),
+    postUpdateProduct,
+  );
+  router.post('/admin/handelDeleteProduct/:id', postDeleteProduct);
 
   app.use('/', router);
 };

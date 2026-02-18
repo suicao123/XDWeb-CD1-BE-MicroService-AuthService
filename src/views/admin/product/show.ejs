@@ -9,7 +9,7 @@
     />
     <meta name="description" content="Hỏi Dân IT - Dự án laptopshop" />
     <meta name="author" content="Hỏi Dân IT" />
-    <title>Manager User - Hỏi Dân IT</title>
+    <title>Manager Product - Hỏi Dân IT</title>
     <link href="/admin/css/styles.css" rel="stylesheet" />
     <script
       src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
@@ -57,10 +57,10 @@
                         <td><%=pr.price%></td>
                         <td><%=pr.factory%></td>
                         <td class="d-flex gap-2">
-                            <form action="/admin/handelDeleteUser/<%= pr.id %>" method="post">
+                            <form action="/admin/handelDeleteProduct/<%= pr.id %>" method="post">
                               <button class="btn btn-danger" type="submit" >Delete</button>
                             </form>
-                            <form action="/admin/handelViewUser/<%= pr.id %>" method="get">
+                            <form action="/admin/handelViewProduct/<%= pr.id %>" method="get">
                               <button class="btn btn-warning" type="submit" >View</button>
                             </form>
                           </td>
