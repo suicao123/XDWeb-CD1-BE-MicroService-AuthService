@@ -7,10 +7,14 @@ import {
   handelGetUserById,
   handelUpdateUser,
   handleCreateUser,
-} from 'services/user.service';
+} from 'services/admin/user.service';
+import { getProduct } from 'services/client/item.service';
 
 const getHomePage = async (req: Request, res: Response) => {
-  return res.render('client/home/show');
+  const products = await getProduct();
+  return res.render('client/home/show', {
+    products,
+  });
 };
 
 const getCreateUserPage = async (req: Request, res: Response) => {

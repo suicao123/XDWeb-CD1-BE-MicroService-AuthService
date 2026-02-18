@@ -4,7 +4,7 @@ import {
   handelGetAllProduct,
   handelGetProductById,
   handelUpdateProduct,
-} from 'services/product.service';
+} from 'services/admin/product.service';
 import {
   ProductSchema,
   TProductSchema,

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { handelGetAllProduct } from 'services/product.service';
-import { getAllRoles, getAllUsers } from 'services/user.service';
+import { handelGetAllProduct } from 'services/admin/product.service';
+import { getAllRoles, getAllUsers } from 'services/admin/user.service';
 
 const getDashboardPage = async (req: Request, res: Response) => {
   return res.render('admin/dashboard/show.ejs');
