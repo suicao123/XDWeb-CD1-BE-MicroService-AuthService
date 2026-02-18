@@ -41,18 +41,29 @@
               <table class="table table-hover table-bordered">
                 <thead>
                   <th>Id</th>
-                  <th>Name</th>
-                  <th>Email</th>
+                  <th>FullName</th>
+                  <th>UserName</th>
+                  <th>Phone</th>
                   <th>Address</th>
+                  <th>Account Type</th>
+                  <th>Role</th>
                   <th>Action</th>
                 </thead>
                 <tbody>
                     <% users.forEach( function (user) { %>
                     <tr>
                           <td><%= user.id %></td>
-                          <td><%= user.fullname %></td>
+                          <td><%= user.fullName %></td>
                           <td><%= user.username %></td>
+                          <td><%= user.phone %></td>
+                          <td><%= user.address %></td>
                           <td><%= user.accountType %></td>
+                          <% roles.forEach(role => { %>
+                              <% if (role.id===user.roleId) { %>
+                            <td><%= role.name %></td>
+                    
+                          <% } 
+                          }); %>
                           <td class="d-flex gap-2">
                             <form action="/admin/handelDeleteUser/<%= user.id %>" method="post">
                               <button class="btn btn-danger" type="submit" >Delete</button>
