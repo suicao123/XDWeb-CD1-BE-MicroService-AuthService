@@ -22,7 +22,7 @@ const getCreateUserPage = async (req: Request, res: Response) => {
 const postCreateUser = async (req: Request, res: Response) => {
   const { fullname, username, phone, address, role } = req.body;
   const file = req.file;
-  const avatar = file?.filename ?? 'Không upload file';
+  const avatar = file?.filename ?? undefined;
   // handele create user
   const user = await handleCreateUser(
     fullname,
@@ -35,6 +35,7 @@ const postCreateUser = async (req: Request, res: Response) => {
 
   return res.redirect('/admin/user');
 };
+
 const postDeleteUser = async (req: Request, res: Response) => {
   const { id } = req.params;
 
