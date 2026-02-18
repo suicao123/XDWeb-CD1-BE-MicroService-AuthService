@@ -2,7 +2,12 @@ import * as z from 'zod';
 
 export const ProductSchema = z.object({
   name: z.string().trim().min(1, { message: 'Name khong dc de trong' }),
-  price: z.number().min(1, { message: 'price khong dc de trong' }),
+  price: z
+    .string()
+    .transform((val) => (val === '' ? 0 : Number(val)))
+    .refine((num) => num > 0, {
+      message: 'Số tiền tối thiểu là 1',
+    }),
   detailDesc: z
     .string()
     .trim()
@@ -11,7 +16,12 @@ export const ProductSchema = z.object({
     .string()
     .trim()
     .min(1, { message: 'shortDesc khong dc de trong' }),
-  quantity: z.number().min(1, { message: 'quantity khong dc de trong' }),
+  quantity: z
+    .string()
+    .transform((val) => (val === '' ? 0 : Number(val)))
+    .refine((num) => num > 0, {
+      message: 'Số tiền tối thiểu là 1',
+    }),
   factory: z.string().trim().min(1, { message: 'factory khong dc de trong' }),
   target: z.string().trim().min(1, { message: 'target khong dc de trong' }),
 });

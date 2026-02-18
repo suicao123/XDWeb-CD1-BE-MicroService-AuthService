@@ -46,12 +46,26 @@
                       <th>Price</th>
                       <th>Factory</th>
                       <th>Action</th>
-   
                   </tr>
                  
                 </thead>
                 <tbody>
-                    
+                    <% products.forEach(pr => { %>
+                      <tr>
+                        <td><%=pr.id%></td>
+                        <td><%=pr.name%></td>
+                        <td><%=pr.price%></td>
+                        <td><%=pr.factory%></td>
+                        <td class="d-flex gap-2">
+                            <form action="/admin/handelDeleteUser/<%= pr.id %>" method="post">
+                              <button class="btn btn-danger" type="submit" >Delete</button>
+                            </form>
+                            <form action="/admin/handelViewUser/<%= pr.id %>" method="get">
+                              <button class="btn btn-warning" type="submit" >View</button>
+                            </form>
+                          </td>
+                      </tr>
+                    <%}); %>
                 </tbody>
               </table>
             </div>
