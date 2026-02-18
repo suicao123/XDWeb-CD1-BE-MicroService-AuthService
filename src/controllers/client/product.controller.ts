@@ -1,6 +1,30 @@
 import { Request, Response } from 'express';
+import { handelGetProductById } from 'services/admin/product.service';
 
-const getProductPage = (req: Request, res: Response) => {
-  res.render('client/product/details');
+const getProductPage = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const product = await handelGetProductById(id as string);
+  const factoryOptions = [
+    { name: 'Apple (MacBook)', value: 'APPLE' },
+    { name: 'Asus', value: 'ASUS' },
+    { name: 'Lenovo', value: 'LENOVO' },
+    { name: 'Dell', value: 'DELL' },
+    { name: 'LG', value: 'LG' },
+    { name: 'Acer', value: 'ACER' },
+  ];
+
+  const targetOptions = [
+    { name: 'Gaming', value: 'GAMING' },
+    { name: 'Sinh viên - Văn phòng', value: 'SINHVIEN-VANPHONG' },
+    { name: 'Thiết kế đồ họa', value: 'THIET-KE-DO-HOA' },
+    { name: 'Mỏng nhẹ', value: 'MONG-NHE' },
+    { name: 'Doanh nhân', value: 'DOANH-NHAN' },
+  ];
+
+  res.render('client/product/details', {
+    product,
+    targetOptions,
+    factoryOptions,
+  });
 };
 export { getProductPage };

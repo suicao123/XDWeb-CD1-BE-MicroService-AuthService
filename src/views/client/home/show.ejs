@@ -110,19 +110,23 @@
                         <div
                           class="p-4 border border-secondary border-top-0 rounded-bottom"
                         >
-                          <h4><%=pr.name%></h4>
-                          <p>
+                          <h4 style="font-size: 15px;">
+                            <a href="/product/<%=pr.id%>" ><%=pr.name%></a>
+                            </h4>
+                          <p style="font-size: 13px;">
                             <%=pr.shortDesc%>
                           </p>
                           <div
                             class="d-flex justify-content-between flex-lg-wrap"
                           >
-                            <p class="text-dark fs-5 fw-bold mb-0">
-                              <%=pr.price%>
+                            <p style="font-size: 15px;text-align: center;width: 100%;" class="text-dark fs-5 fw-bold mb-0">
+                              <%= new Intl.NumberFormat('vi-VN', {
+                                  style: 'currency' , currency: 'VND'
+                                  }).format(pr.price) %>  
                             </p>
                             <a
                               href="#"
-                              class="btn border border-secondary rounded-pill px-3 text-primary"
+                              class=" mx-auto btn border border-secondary rounded-pill px-3 text-primary"
                               ><i
                                 class="fa fa-shopping-bag me-2 text-primary"
                               ></i>
