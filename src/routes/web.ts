@@ -23,7 +23,7 @@ import {
   postUpdateProduct,
 } from 'controllers/admin/product.controller';
 import { getLoginPage } from 'controllers/client/login.controller';
-import { getRegisterPage } from 'controllers/client/register.controller';
+import { getRegisterPage, postRegister } from 'controllers/client/register.controller';
 
 const router = express.Router();
 const webRoutes = (app: Express) => {
@@ -31,6 +31,7 @@ const webRoutes = (app: Express) => {
   router.get('/', getHomePage);
   router.get('/login', getLoginPage);
   router.get('/register', getRegisterPage);
+  router.post('/register', postRegister);
 
   router.get('/product/:id', getProductPage);
   router.get('/create-user', getCreateUserPage);
