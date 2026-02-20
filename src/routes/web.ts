@@ -39,7 +39,7 @@ const webRoutes = (app: Express) => {
   //CLIENT
   router.get('/', getHomePage);
   router.get('/succes-redirect', getSuccessRedirectPage);
-  router.get('/login', isLogin, getLoginPage);
+  router.get('/login', getLoginPage);
   router.post(
     '/login',
     passport.authenticate('local', {
@@ -65,7 +65,7 @@ const webRoutes = (app: Express) => {
 
   //admin routes
   //USER
-  router.get('/admin', isAdmin, getDashboardPage);
+  router.get('/admin', getDashboardPage);
   router.get('/admin/user', getAdminUserPage);
   router.get('/admin/order', getAdminOrderPage);
   router.get('/admin/create-user', getCreateUserPage);
@@ -100,6 +100,6 @@ const webRoutes = (app: Express) => {
   );
   router.post('/admin/handelDeleteProduct/:id', postDeleteProduct);
 
-  app.use('/', router);
+  app.use('/', isAdmin, router);
 };
 export default webRoutes;

@@ -58,7 +58,7 @@ webRoutes(app);
 
 //handel 404 notFound
 app.use((req, res) => {
-  res.send('404 not found');
+  res.render('status/404');
 });
 innitDatabase();
 app.listen(PORT, () => {
