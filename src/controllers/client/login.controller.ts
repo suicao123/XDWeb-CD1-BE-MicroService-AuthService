@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
 const getLoginPage = (req: Request, res: Response) => {
   const { session } = req as any;
@@ -15,4 +15,12 @@ const getSuccessRedirectPage = (req: Request, res: Response) => {
     res.redirect('/');
   }
 };
-export { getLoginPage, getSuccessRedirectPage };
+const postLogout = (req: Request, res: Response, next: NextFunction) => {
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    res.redirect('/');
+  });
+};
+export { getLoginPage, getSuccessRedirectPage, postLogout };

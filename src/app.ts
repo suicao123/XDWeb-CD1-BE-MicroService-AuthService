@@ -1,4 +1,7 @@
+/// <reference path="./types/index.d.ts" />
+
 // const express=require('express')
+
 import express from 'express';
 import 'dotenv/config';
 import webRoutes from 'routes/web';
