@@ -13,6 +13,7 @@ import { getProduct } from 'services/client/item.service';
 const getHomePage = async (req: Request, res: Response) => {
   const products = await getProduct();
   const user = req.user;
+  console.log('>>>>>> current user: ', user);
   return res.render('client/home/show', {
     products,
   });

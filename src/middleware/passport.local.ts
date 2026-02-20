@@ -1,7 +1,10 @@
 import { prisma } from 'config/client';
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
-import { comparePassword } from 'services/admin/user.service';
+import {
+  comparePassword,
+  handelGetUserById,
+} from 'services/admin/user.service';
 
 const configPassportLocal = () => {
   passport.use(
@@ -39,15 +42,16 @@ const configPassportLocal = () => {
       },
     ),
   );
-  passport.serializeUser(function (user: any, cb) {
-    process.nextTick(function () {
-      cb(null, { id: user.id, username: user.username });
-    });
+  passport.serializeUser(function (user: any, callback) {
+    callback(null, { id: user.id, username: user.username });
   });
 
-  passport.deserializeUser(function (user, cb) {
-    process.nextTick(function () {
-      return cb(null, user);
+  passport.deserializeUser(async function (user: any, callback) {
+    const { id, username } = user;
+    //querry database
+    const userInDB = await handelGetUserById(id);
+    return callback(null, {
+      ...userInDB,
     });
   });
 };
