@@ -8,8 +8,13 @@ const configPassportLocal = () => {
     new LocalStrategy(
       {
         usernameField: 'email',
+        passReqToCallback: true,
       },
-      async function verify(username, password, callback) {
+      async function verify(req, username, password, callback) {
+        const { session } = req as any;
+        if (session?.messages?.length) {
+          session.messages = [];
+        }
         const user = await prisma.user.findUnique({
           where: {
             username,
@@ -18,7 +23,7 @@ const configPassportLocal = () => {
         if (!user) {
           // throw new Error(`Username:${username} not found`);
           return callback(null, false, {
-            message: `Username:${username} not found`,
+            message: `Username/password invalid`,
           });
         }
 
@@ -27,7 +32,7 @@ const configPassportLocal = () => {
         if (!isMatch) {
           // throw new Error('Invalid password');
           return callback(null, false, {
-            message: `Invalid password`,
+            message: `Username/password invalid`,
           });
         }
         return callback(null, user);
