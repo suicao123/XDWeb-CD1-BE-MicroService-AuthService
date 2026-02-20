@@ -22,22 +22,27 @@ import {
   postDeleteProduct,
   postUpdateProduct,
 } from 'controllers/admin/product.controller';
-import { getLoginPage } from 'controllers/client/login.controller';
+import {
+  getLoginPage,
+  getSuccessRedirectPage,
+} from 'controllers/client/login.controller';
 import {
   getRegisterPage,
   postRegister,
 } from 'controllers/client/register.controller';
 import passport from 'passport';
+import { isAdmin, isLogin } from 'src/middleware/auth';
 
 const router = express.Router();
 const webRoutes = (app: Express) => {
   //CLIENT
   router.get('/', getHomePage);
-  router.get('/login', getLoginPage);
+  router.get('/succes-redirect', getSuccessRedirectPage);
+  router.get('/login', isLogin, getLoginPage);
   router.post(
     '/login',
     passport.authenticate('local', {
-      successRedirect: '/',
+      successRedirect: '/succes-redirect',
       failureRedirect: '/login',
       failureMessage: true,
     }),
@@ -58,7 +63,7 @@ const webRoutes = (app: Express) => {
 
   //admin routes
   //USER
-  router.get('/admin', getDashboardPage);
+  router.get('/admin', isAdmin, getDashboardPage);
   router.get('/admin/user', getAdminUserPage);
   router.get('/admin/order', getAdminOrderPage);
   router.get('/admin/create-user', getCreateUserPage);

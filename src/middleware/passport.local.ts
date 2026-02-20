@@ -1,10 +1,8 @@
 import { prisma } from 'config/client';
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
-import {
-  comparePassword,
-  handelGetUserById,
-} from 'services/admin/user.service';
+import { comparePassword } from 'services/admin/user.service';
+import { getUserWithRoleById } from 'services/client/auth.service';
 
 const configPassportLocal = () => {
   passport.use(
@@ -49,7 +47,7 @@ const configPassportLocal = () => {
   passport.deserializeUser(async function (user: any, callback) {
     const { id, username } = user;
     //querry database
-    const userInDB = await handelGetUserById(id);
+    const userInDB = await getUserWithRoleById(id);
     return callback(null, {
       ...userInDB,
     });

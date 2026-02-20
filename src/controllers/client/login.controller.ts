@@ -7,4 +7,12 @@ const getLoginPage = (req: Request, res: Response) => {
     mesages,
   });
 };
-export { getLoginPage };
+const getSuccessRedirectPage = (req: Request, res: Response) => {
+  const user = req.user as any;
+  if (user?.role.name === 'ADMIN') {
+    res.redirect('/admin');
+  } else {
+    res.redirect('/');
+  }
+};
+export { getLoginPage, getSuccessRedirectPage };
