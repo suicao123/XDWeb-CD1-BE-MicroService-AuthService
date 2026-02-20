@@ -21,6 +21,10 @@ app.use(express.static('public'));
 //config routes
 webRoutes(app);
 
+//handel 404 notFound
+app.use((req, res) => {
+  res.send('404 not found');
+});
 innitDatabase();
 app.listen(PORT, () => {
   console.log(`My app is running on port:${PORT}`);
