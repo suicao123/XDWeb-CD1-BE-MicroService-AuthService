@@ -14,7 +14,10 @@ import {
   getDashboardPage,
 } from 'controllers/admin/dashboard.controller';
 import fileUploadMiddleware from 'src/middleware/multer';
-import { getProductPage } from 'controllers/client/product.controller';
+import {
+  getProductPage,
+  postAddProductToCart,
+} from 'controllers/client/product.controller';
 import {
   getCreateProductPage,
   getViewProdcut,
@@ -53,15 +56,18 @@ const webRoutes = (app: Express) => {
   router.post('/register', postRegister);
 
   router.get('/product/:id', getProductPage);
-  router.get('/create-user', getCreateUserPage);
 
-  router.post('/handel-create-user', postCreateUser);
+  router.post('/add-product-to-cart/:id', isLogin, postAddProductToCart);
 
-  router.post('/handelDeleteUser/:id', postDeleteUser);
+  // router.get('/create-user', getCreateUserPage);
 
-  router.get('/handelViewUser/:id', getViewUser);
+  // router.post('/handel-create-user', postCreateUser);
 
-  router.post('/handel-update-user', postUpdateUser);
+  // router.post('/handelDeleteUser/:id', postDeleteUser);
+
+  // router.get('/handelViewUser/:id', getViewUser);
+
+  // router.post('/handel-update-user', postUpdateUser);
 
   //admin routes
   //USER

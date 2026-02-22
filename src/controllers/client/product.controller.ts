@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { handelGetProductById } from 'services/admin/product.service';
+import { addProductToCart } from 'services/client/item.service';
 
 const getProductPage = async (req: Request, res: Response) => {
   const { id } = req.params;
@@ -27,4 +28,10 @@ const getProductPage = async (req: Request, res: Response) => {
     factoryOptions,
   });
 };
-export { getProductPage };
+const postAddProductToCart = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const user = req.user;
+  await addProductToCart(1, +id, user);
+  return res.redirect('/');
+};
+export { getProductPage, postAddProductToCart };
