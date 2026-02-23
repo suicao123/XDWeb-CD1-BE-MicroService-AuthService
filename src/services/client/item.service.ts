@@ -77,4 +77,15 @@ const addProductToCart = async (
     });
   }
 };
-export { getProduct, addProductToCart };
+const getcartDetailWithId = async (id: number) => {
+  const products = await prisma.cartDetail.findMany({
+    where: {
+      cartId: id,
+    },
+    include: {
+      product: true,
+    },
+  });
+  return products;
+};
+export { getProduct, addProductToCart, getcartDetailWithId };

@@ -1,6 +1,10 @@
 import { Request, Response } from 'express';
 import { handelGetProductById } from 'services/admin/product.service';
-import { addProductToCart } from 'services/client/item.service';
+import { getCardIdWithUser } from 'services/client/auth.service';
+import {
+  addProductToCart,
+  getcartDetailWithId,
+} from 'services/client/item.service';
 
 const getProductPage = async (req: Request, res: Response) => {
   const { id } = req.params;
@@ -35,6 +39,15 @@ const postAddProductToCart = async (req: Request, res: Response) => {
   return res.redirect('/');
 };
 const getCartPage = async (req: Request, res: Response) => {
-  return res.render('client/product/cart');
+  const user = req.user;
+  const cartId = await getCardIdWithUser(user.id);
+  const cartDetail = await getcartDetailWithId(cartId);
+  const totalPrice = cartDetail
+    ?.map((item) => +item.price * +item.quantity)
+    ?.reduce((a, b) => a + b, 0);
+  return res.render('client/product/cart', {
+    cartDetail,
+    totalPrice,
+  });
 };
 export { getProductPage, postAddProductToCart, getCartPage };
