@@ -48,6 +48,7 @@ const getCartPage = async (req: Request, res: Response) => {
   return res.render('client/product/cart', {
     cartDetail,
     totalPrice,
+    user,
   });
 };
 export { getProductPage, postAddProductToCart, getCartPage };
