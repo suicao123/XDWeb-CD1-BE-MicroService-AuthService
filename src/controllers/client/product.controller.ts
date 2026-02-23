@@ -43,12 +43,12 @@ const postAddProductToCart = async (req: Request, res: Response) => {
 const getCartPage = async (req: Request, res: Response) => {
   const user = req.user;
   const cartId = await getCardIdWithUser(user.id);
-  const cartDetail = await getcartDetailWithId(cartId);
-  const totalPrice = cartDetail
+  const cartDetails = await getcartDetailWithId(cartId);
+  const totalPrice = cartDetails
     ?.map((item) => +item.price * +item.quantity)
     ?.reduce((a, b) => a + b, 0);
   return res.render('client/product/cart', {
-    cartDetail,
+    cartDetails,
     totalPrice,
     user,
   });
@@ -58,4 +58,22 @@ const postDeleteCart = async (req: Request, res: Response) => {
   await handelDeleteCart(+id);
   res.redirect('/cart');
 };
-export { getProductPage, postAddProductToCart, getCartPage, postDeleteCart };
+const getCheckOutPage = async (req: Request, res: Response) => {
+  const user = req.user;
+  const cartId = await getCardIdWithUser(user.id);
+  const cartDetails = await getcartDetailWithId(cartId);
+  const totalPrice = cartDetails
+    ?.map((item) => +item.price * +item.quantity)
+    ?.reduce((a, b) => a + b, 0);
+  res.render('client/product/checkout', {
+    cartDetails,
+    totalPrice,
+  });
+};
+export {
+  getProductPage,
+  postAddProductToCart,
+  getCartPage,
+  postDeleteCart,
+  getCheckOutPage,
+};
