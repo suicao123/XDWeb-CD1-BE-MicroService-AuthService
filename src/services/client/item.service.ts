@@ -117,4 +117,24 @@ const handelDeleteCart = async (id: number) => {
     });
   }
 };
-export { getProduct, addProductToCart, getcartDetailWithId, handelDeleteCart };
+const updateCartDetailBeforeCheckout = async (
+  data: { id: string; quantity: string }[],
+) => {
+  data.map(async (item) => {
+    await prisma.cartDetail.update({
+      where: {
+        id: +item.id,
+      },
+      data: {
+        quantity: +item.quantity,
+      },
+    });
+  });
+};
+export {
+  getProduct,
+  addProductToCart,
+  getcartDetailWithId,
+  handelDeleteCart,
+  updateCartDetailBeforeCheckout,
+};

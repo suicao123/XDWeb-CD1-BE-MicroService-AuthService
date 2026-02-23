@@ -20,6 +20,7 @@ import {
   getProductPage,
   postAddProductToCart,
   postDeleteCart,
+  postHandelCartToCheckout,
 } from 'controllers/client/product.controller';
 import {
   getCreateProductPage,
@@ -67,6 +68,8 @@ const webRoutes = (app: Express) => {
   router.post('/delete-product-in-cart/:id', isLogin, postDeleteCart);
 
   router.get('/checkout', getCheckOutPage);
+
+  router.post('/handel-cart-to-checkout', isLogin, postHandelCartToCheckout);
 
   // router.get('/create-user', getCreateUserPage);
 

@@ -5,6 +5,7 @@ import {
   addProductToCart,
   getcartDetailWithId,
   handelDeleteCart,
+  updateCartDetailBeforeCheckout,
 } from 'services/client/item.service';
 import { number } from 'zod';
 
@@ -56,7 +57,7 @@ const getCartPage = async (req: Request, res: Response) => {
 const postDeleteCart = async (req: Request, res: Response) => {
   const { id } = req.params;
   await handelDeleteCart(+id);
-  res.redirect('/cart');
+  return res.redirect('/cart');
 };
 const getCheckOutPage = async (req: Request, res: Response) => {
   const user = req.user;
@@ -65,10 +66,16 @@ const getCheckOutPage = async (req: Request, res: Response) => {
   const totalPrice = cartDetails
     ?.map((item) => +item.price * +item.quantity)
     ?.reduce((a, b) => a + b, 0);
-  res.render('client/product/checkout', {
+  return res.render('client/product/checkout', {
     cartDetails,
     totalPrice,
   });
+};
+const postHandelCartToCheckout = async (req: Request, res: Response) => {
+  const currentCartDetail: { id: string; quantity: string }[] =
+    req.body?.cartDetails ?? [];
+  await updateCartDetailBeforeCheckout(currentCartDetail);
+  return res.redirect('/checkout');
 };
 export {
   getProductPage,
@@ -76,4 +83,5 @@ export {
   getCartPage,
   postDeleteCart,
   getCheckOutPage,
+  postHandelCartToCheckout,
 };
