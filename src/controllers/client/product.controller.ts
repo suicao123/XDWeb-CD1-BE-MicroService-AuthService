@@ -4,7 +4,9 @@ import { getCardIdWithUser } from 'services/client/auth.service';
 import {
   addProductToCart,
   getcartDetailWithId,
+  handelDeleteCart,
 } from 'services/client/item.service';
+import { number } from 'zod';
 
 const getProductPage = async (req: Request, res: Response) => {
   const { id } = req.params;
@@ -51,4 +53,9 @@ const getCartPage = async (req: Request, res: Response) => {
     user,
   });
 };
-export { getProductPage, postAddProductToCart, getCartPage };
+const postDeleteCart = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  await handelDeleteCart(+id);
+  res.redirect('/cart');
+};
+export { getProductPage, postAddProductToCart, getCartPage, postDeleteCart };

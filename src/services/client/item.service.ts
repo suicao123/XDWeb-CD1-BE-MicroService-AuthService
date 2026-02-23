@@ -88,4 +88,33 @@ const getcartDetailWithId = async (id: number) => {
   });
   return products;
 };
-export { getProduct, addProductToCart, getcartDetailWithId };
+const handelDeleteCart = async (id: number) => {
+  const cardDetail = await prisma.cartDetail.delete({
+    where: {
+      id: id,
+    },
+  });
+  const card = await prisma.cart.findUnique({
+    where: {
+      id: cardDetail.cartId,
+    },
+  });
+  const count = +card.sum - +cardDetail.quantity;
+  if (count === 0) {
+    await prisma.cart.delete({
+      where: {
+        id: card.id,
+      },
+    });
+  } else {
+    await prisma.cart.update({
+      where: {
+        id: card.id,
+      },
+      data: {
+        sum: count,
+      },
+    });
+  }
+};
+export { getProduct, addProductToCart, getcartDetailWithId, handelDeleteCart };

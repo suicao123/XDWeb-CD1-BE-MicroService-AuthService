@@ -80,7 +80,7 @@
               </tr>
             </thead>
             <tbody>
-                <% cartDetail.forEach(cart => { %>
+                <% cartDetail?.forEach(cart => { %>
                      <tr>
                 <th scope="row">
                   <div class="d-flex align-items-center">
@@ -137,11 +137,16 @@
                                   }).format(cart.product.price * cart.quantity) %>  </p>
                 </td>
                 <td>
-                  <button
-                    class="btn btn-md rounded-circle bg-light border mt-4"
-                  >
-                    <i class="fa fa-times text-danger"></i>
-                  </button>
+                    <form action="/delete-product-in-cart/<%=cart.id %>" method="post">
+                        <button type="submit"
+                            class="btn btn-md rounded-circle bg-light border mt-4"
+                        >
+                            <i class="fa fa-times text-danger"></i>
+                        </button>
+                    </form>
+             
+
+                  
                 </td>
               </tr>
                 <%}); %>
