@@ -5,6 +5,7 @@ import {
   addProductToCart,
   getcartDetailWithId,
   handelDeleteCart,
+  handelPlaceOrder,
   updateCartDetailBeforeCheckout,
 } from 'services/client/item.service';
 import { number } from 'zod';
@@ -77,6 +78,22 @@ const postHandelCartToCheckout = async (req: Request, res: Response) => {
   await updateCartDetailBeforeCheckout(currentCartDetail);
   return res.redirect('/checkout');
 };
+const postPlaceOrder = async (req: Request, res: Response) => {
+  const user = req.user;
+
+  const { receiverName, receiverAddress, receiverPhone, totalPrice } = req.body;
+  await handelPlaceOrder(
+    user.id,
+    receiverName,
+    receiverAddress,
+    receiverPhone,
+    +totalPrice,
+  );
+  return res.redirect('/thanks');
+};
+const getThanksPage = async (req: Request, res: Response) => {
+  return res.render('client/product/thanks');
+};
 export {
   getProductPage,
   postAddProductToCart,
@@ -84,4 +101,6 @@ export {
   postDeleteCart,
   getCheckOutPage,
   postHandelCartToCheckout,
+  postPlaceOrder,
+  getThanksPage,
 };

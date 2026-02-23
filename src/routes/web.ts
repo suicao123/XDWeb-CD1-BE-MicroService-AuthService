@@ -18,9 +18,11 @@ import {
   getCartPage,
   getCheckOutPage,
   getProductPage,
+  getThanksPage,
   postAddProductToCart,
   postDeleteCart,
   postHandelCartToCheckout,
+  postPlaceOrder,
 } from 'controllers/client/product.controller';
 import {
   getCreateProductPage,
@@ -70,6 +72,10 @@ const webRoutes = (app: Express) => {
   router.get('/checkout', getCheckOutPage);
 
   router.post('/handel-cart-to-checkout', isLogin, postHandelCartToCheckout);
+
+  router.post('/place-order', isLogin, postPlaceOrder);
+
+  router.get('/thanks', isLogin, getThanksPage);
 
   // router.get('/create-user', getCreateUserPage);
 
