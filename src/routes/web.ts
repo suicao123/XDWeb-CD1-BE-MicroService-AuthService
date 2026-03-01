@@ -43,6 +43,7 @@ import {
 import passport from 'passport';
 import { isAdmin, isLogin } from 'src/middleware/auth';
 import { getViewOrder } from 'controllers/admin/order.controller';
+import { getHistoryPage } from 'controllers/client/history.controller';
 
 const router = express.Router();
 const webRoutes = (app: Express) => {
@@ -77,6 +78,8 @@ const webRoutes = (app: Express) => {
   router.post('/place-order', isLogin, postPlaceOrder);
 
   router.get('/thanks', isLogin, getThanksPage);
+
+  router.get('/order-history', getHistoryPage);
 
   // router.get('/create-user', getCreateUserPage);
 

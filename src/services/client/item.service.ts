@@ -184,6 +184,21 @@ const handelPlaceOrder = async (
   }
   console.log(cart);
 };
+const handelTakeHistoryUser = async (userId: number) => {
+  const history = await prisma.order.findMany({
+    where: {
+      userId,
+    },
+    include: {
+      orderDetails: {
+        include: {
+          product: true,
+        },
+      },
+    },
+  });
+  return history;
+};
 export {
   getProduct,
   addProductToCart,
@@ -191,4 +206,5 @@ export {
   handelDeleteCart,
   updateCartDetailBeforeCheckout,
   handelPlaceOrder,
+  handelTakeHistoryUser,
 };
