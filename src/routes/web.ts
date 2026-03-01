@@ -20,6 +20,7 @@ import {
   getProductPage,
   getThanksPage,
   postAddProductToCart,
+  postAddToCartFromDetailPage,
   postDeleteCart,
   postHandelCartToCheckout,
   postPlaceOrder,
@@ -80,6 +81,7 @@ const webRoutes = (app: Express) => {
   router.get('/thanks', isLogin, getThanksPage);
 
   router.get('/order-history', getHistoryPage);
+  router.post('/add-to-cart-from-detail-page/:id', postAddToCartFromDetailPage);
 
   // router.get('/create-user', getCreateUserPage);
 

@@ -49,10 +49,12 @@ const getCartPage = async (req: Request, res: Response) => {
   const totalPrice = cartDetails
     ?.map((item) => +item.price * +item.quantity)
     ?.reduce((a, b) => a + b, 0);
+  const cardId = cartDetails.length ? cartDetails[0].cartId : 0;
   return res.render('client/product/cart', {
     cartDetails,
     totalPrice,
     user,
+    cardId,
   });
 };
 const postDeleteCart = async (req: Request, res: Response) => {
@@ -75,21 +77,34 @@ const getCheckOutPage = async (req: Request, res: Response) => {
 const postHandelCartToCheckout = async (req: Request, res: Response) => {
   const currentCartDetail: { id: string; quantity: string }[] =
     req.body?.cartDetails ?? [];
-  await updateCartDetailBeforeCheckout(currentCartDetail);
+  const { cartId } = req.body;
+  await updateCartDetailBeforeCheckout(currentCartDetail, cartId);
   return res.redirect('/checkout');
 };
 const postPlaceOrder = async (req: Request, res: Response) => {
   const user = req.user;
-
   const { receiverName, receiverAddress, receiverPhone, totalPrice } = req.body;
-  await handelPlaceOrder(
+
+  const result = await handelPlaceOrder(
     user.id,
     receiverName,
     receiverAddress,
     receiverPhone,
     +totalPrice,
   );
+  if (result) {
+    console.log('>>>> check message: ', result);
+    return res.redirect('/checkout');
+  }
   return res.redirect('/thanks');
+};
+const postAddToCartFromDetailPage = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { quantity } = req.body;
+  const user = req.user;
+  if (!user) return res.redirect('/login');
+  await addProductToCart(+quantity, +id, user);
+  return res.redirect(`/product/${id}`);
 };
 const getThanksPage = async (req: Request, res: Response) => {
   return res.render('client/product/thanks');
@@ -103,4 +118,5 @@ export {
   postHandelCartToCheckout,
   postPlaceOrder,
   getThanksPage,
+  postAddToCartFromDetailPage,
 };

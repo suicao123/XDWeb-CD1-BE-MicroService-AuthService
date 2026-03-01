@@ -94,6 +94,7 @@ const handelDeleteCart = async (id: number) => {
       id: id,
     },
   });
+  const quantity = cardDetail.quantity;
   const card = await prisma.cart.findUnique({
     where: {
       id: cardDetail.cartId,
@@ -112,23 +113,36 @@ const handelDeleteCart = async (id: number) => {
         id: card.id,
       },
       data: {
-        sum: count,
+        sum: {
+          decrement: quantity,
+        },
       },
     });
   }
 };
 const updateCartDetailBeforeCheckout = async (
   data: { id: string; quantity: string }[],
+  cartId: string,
 ) => {
-  data.map(async (item) => {
+  let quantity = 0;
+  for (let i = 0; i < data.length; i++) {
+    quantity += +data[i].quantity;
     await prisma.cartDetail.update({
       where: {
-        id: +item.id,
+        id: +data[i].id,
       },
       data: {
-        quantity: +item.quantity,
+        quantity: +data[i].quantity,
       },
     });
+  }
+  await prisma.cart.update({
+    where: {
+      id: +cartId,
+    },
+    data: {
+      sum: quantity,
+    },
   });
 };
 const handelPlaceOrder = async (
@@ -138,51 +152,85 @@ const handelPlaceOrder = async (
   receiverPhone: string,
   totalPrice: number,
 ) => {
-  const cart = await prisma.cart.findUnique({
-    where: {
-      userId,
-    },
-    include: {
-      cartDetails: true,
-    },
-  });
-  if (cart) {
-    //create order
-    const dataOrderDetail =
-      cart?.cartDetails?.map((item) => ({
-        price: item.price,
-        quantity: item.quantity,
-        productId: item.productId,
-      })) ?? [];
-    await prisma.order.create({
-      data: {
-        receiverName,
-        receiverAddress,
-        receiverPhone,
-        paymentMethod: 'COD',
-        paymentStatus: 'PAYMENT_UNPAID',
-        staus: 'PEDING',
-        totalPrice: totalPrice,
-        userId,
-        orderDetails: {
-          create: dataOrderDetail,
+  try {
+    await prisma.$transaction(async (tx) => {
+      const cart = await tx.cart.findUnique({
+        where: {
+          userId,
         },
-      },
-    });
+        include: {
+          cartDetails: true,
+        },
+      });
+      if (cart) {
+        //create order
+        const dataOrderDetail =
+          cart?.cartDetails?.map((item) => ({
+            price: item.price,
+            quantity: item.quantity,
+            productId: item.productId,
+          })) ?? [];
+        await tx.order.create({
+          data: {
+            receiverName,
+            receiverAddress,
+            receiverPhone,
+            paymentMethod: 'COD',
+            paymentStatus: 'PAYMENT_UNPAID',
+            staus: 'PEDING',
+            totalPrice: totalPrice,
+            userId,
+            orderDetails: {
+              create: dataOrderDetail,
+            },
+          },
+        });
 
-    //remove cart detail +cart
-    await prisma.cartDetail.deleteMany({
-      where: {
-        cartId: cart.id,
-      },
+        //remove cart detail +cart
+        await tx.cartDetail.deleteMany({
+          where: {
+            cartId: cart.id,
+          },
+        });
+        await tx.cart.delete({
+          where: {
+            id: cart.id,
+          },
+        });
+
+        //check product
+        for (let i = 0; i < cart.cartDetails.length; i++) {
+          const productId = cart.cartDetails[i].productId;
+          const product = await tx.product.findUnique({
+            where: { id: productId },
+          });
+          if (!product || product.quantity < cart.cartDetails[i].quantity) {
+            throw new Error(
+              `Sản phẩm ${product?.name} không tồn tại hoặc không đủ số lượng`,
+            );
+          }
+          await tx.product.update({
+            where: {
+              id: productId,
+            },
+            data: {
+              quantity: {
+                decrement: cart.cartDetails[i].quantity,
+              },
+              sold: {
+                increment: cart.cartDetails[i].quantity,
+              },
+            },
+          });
+        }
+      }
     });
-    await prisma.cart.delete({
-      where: {
-        id: cart.id,
-      },
-    });
+    return '';
+  } catch (error) {
+    console.log(error);
+    return error.message;
   }
-  console.log(cart);
+  //Tạo transaction
 };
 const handelTakeHistoryUser = async (userId: number) => {
   const history = await prisma.order.findMany({

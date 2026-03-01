@@ -1,10 +1,14 @@
 import { Request, Response } from 'express';
+import { getDashboardPageInfo } from 'services/admin/dashboard.service';
 import { handelGetAllOrder } from 'services/admin/order.service';
 import { handelGetAllProduct } from 'services/admin/product.service';
 import { getAllRoles, getAllUsers } from 'services/admin/user.service';
 
 const getDashboardPage = async (req: Request, res: Response) => {
-  return res.render('admin/dashboard/show.ejs');
+  const info = await getDashboardPageInfo();
+  return res.render('admin/dashboard/show.ejs', {
+    info,
+  });
 };
 const getAdminUserPage = async (req: Request, res: Response) => {
   const users = await getAllUsers();
