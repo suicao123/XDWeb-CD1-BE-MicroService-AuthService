@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { handelGetAllOrder } from 'services/admin/order.service';
 import { handelGetAllProduct } from 'services/admin/product.service';
 import { getAllRoles, getAllUsers } from 'services/admin/user.service';
 
@@ -14,7 +15,11 @@ const getAdminUserPage = async (req: Request, res: Response) => {
   });
 };
 const getAdminOrderPage = async (req: Request, res: Response) => {
-  return res.render('admin/order/show.ejs');
+  const orders = await handelGetAllOrder();
+
+  return res.render('admin/order/show.ejs', {
+    orders,
+  });
 };
 const getAdminProductPage = async (req: Request, res: Response) => {
   const products = await handelGetAllProduct();

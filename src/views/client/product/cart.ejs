@@ -160,7 +160,7 @@
                                     </div>
 
                                 </div>
-                                <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
+                                <div class="py-4 mb-4 border-top  d-flex justify-content-between">
                                     <h5 class="mb-0 ps-4 me-4">Tổng số tiền</h5>
                                     <p class="mb-0 pe-4" data-cart-total-price="<%= totalPrice %>">
                                         <%= new Intl.NumberFormat('vi-VN', { style: 'currency' , currency: 'VND'
@@ -170,7 +170,7 @@
                                 <form method="post" action="/handel-cart-to-checkout">
                                   <div style="display: block">
                                         <% cartDetails.forEach( function (cartDetail, index) { %>
-                                            <div class="mb-3">
+                                            <div class="mb-3 " style="display: none;">
                                                 <div class="form-group">
                                                     <label>Id:</label>
                                                     <input class="form-control" type="text" value="<%=cartDetail.id %>"

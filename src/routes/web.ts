@@ -42,6 +42,7 @@ import {
 } from 'controllers/client/register.controller';
 import passport from 'passport';
 import { isAdmin, isLogin } from 'src/middleware/auth';
+import { getViewOrder } from 'controllers/admin/order.controller';
 
 const router = express.Router();
 const webRoutes = (app: Express) => {
@@ -87,11 +88,12 @@ const webRoutes = (app: Express) => {
 
   // router.post('/handel-update-user', postUpdateUser);
 
-  //admin routes
-  //USER
+  //ADMIN
+
+  //USER PAGE
   router.get('/admin', getDashboardPage);
   router.get('/admin/user', getAdminUserPage);
-  router.get('/admin/order', getAdminOrderPage);
+
   router.get('/admin/create-user', getCreateUserPage);
   router.get('/admin/handelViewUser/:id', getViewUser);
   router.post(
@@ -107,7 +109,7 @@ const webRoutes = (app: Express) => {
     postCreateUser,
   );
 
-  //PRODUCT
+  //PRODUCT PAGE
   router.get('/admin/product', getAdminProductPage);
 
   router.get('/admin/create-product', getCreateProductPage);
@@ -124,6 +126,9 @@ const webRoutes = (app: Express) => {
   );
   router.post('/admin/handelDeleteProduct/:id', postDeleteProduct);
 
+  //ORDER PAGE
+  router.get('/admin/order', getAdminOrderPage);
+  router.get('/admin/order/:id', getViewOrder);
   app.use('/', isAdmin, router);
 };
 export default webRoutes;
