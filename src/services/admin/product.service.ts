@@ -1,4 +1,8 @@
 import { prisma } from 'config/client';
+import {
+  TOTAL_ITEMS_PER_PAGE,
+  TOTAL_ITEMS_PRODUCT_PAGE,
+} from 'config/constant';
 const handelCreateProduct = async (
   name: string,
   price: number,
@@ -23,8 +27,13 @@ const handelCreateProduct = async (
   });
   return newProdcut;
 };
-const handelGetAllProduct = async () => {
-  const products = await prisma.product.findMany();
+const handelGetAllProduct = async (page: number) => {
+  const pageSize = TOTAL_ITEMS_PRODUCT_PAGE;
+  const skip = (page - 1) * pageSize;
+  const products = await prisma.product.findMany({
+    skip,
+    take: pageSize,
+  });
   return products;
 };
 const handelGetProductById = async (id: string) => {
@@ -71,10 +80,18 @@ const handelDeleteProduct = async (id: string) => {
   });
   return product;
 };
+const countTotalProductPages = async () => {
+  const pageSize = TOTAL_ITEMS_PRODUCT_PAGE;
+
+  const countUsers = await prisma.product.count();
+  const totalPages = Math.ceil(countUsers / pageSize);
+  return totalPages;
+};
 export {
   handelCreateProduct,
   handelGetAllProduct,
   handelGetProductById,
   handelUpdateProduct,
   handelDeleteProduct,
+  countTotalProductPages,
 };

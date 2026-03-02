@@ -64,6 +64,28 @@
                  <% }); %>
                 </tbody>
               </table>
+              <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                  <li class="page-item">
+                    <a class="page-link <%= curentPage==1 ? 'disabled' : '' %> " 
+                      href="/admin/order?page=<%= curentPage - 1  %>" 
+                      aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                  </li>
+                  <% for (let i = 1; i <= totalPage; i++) { %>
+                      <li class="page-item"><a class="page-link <%= curentPage==i ? 'active' : '' %>" href="/admin/order?page=<%= i %>"><%=i%></a></li>
+                    
+                  <% } %>
+                  <li class="page-item">
+                    <a class="page-link  <%= curentPage==totalPage ? 'disabled' : '' %> " 
+                      href="/admin/order?page=<%= +curentPage + 1 %>" 
+                      aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
             </div>
           </div>
         </main>

@@ -1,7 +1,13 @@
 import { Request, Response } from 'express';
 import { getDashboardPageInfo } from 'services/admin/dashboard.service';
-import { handelGetAllOrder } from 'services/admin/order.service';
-import { handelGetAllProduct } from 'services/admin/product.service';
+import {
+  countTotalOrderPages,
+  handelGetAllOrder,
+} from 'services/admin/order.service';
+import {
+  countTotalProductPages,
+  handelGetAllProduct,
+} from 'services/admin/product.service';
 import {
   countTotalUserPages,
   getAllRoles,
@@ -19,7 +25,6 @@ const getAdminUserPage = async (req: Request, res: Response) => {
 
   let curentPage = page ? +page : 1;
   if (curentPage <= 0) curentPage = 1;
-  console.log('>>> check page:', page);
   const users = await getAllUsers(curentPage);
 
   const roles = await getAllRoles();
@@ -33,16 +38,31 @@ const getAdminUserPage = async (req: Request, res: Response) => {
   });
 };
 const getAdminOrderPage = async (req: Request, res: Response) => {
-  const orders = await handelGetAllOrder();
+  const { page } = req.query;
+
+  let curentPage = page ? +page : 1;
+  if (curentPage <= 0) curentPage = 1;
+  const totalPage = await countTotalOrderPages();
+  const orders = await handelGetAllOrder(curentPage);
 
   return res.render('admin/order/show.ejs', {
     orders,
+    totalPage,
+    curentPage,
   });
 };
 const getAdminProductPage = async (req: Request, res: Response) => {
-  const products = await handelGetAllProduct();
+  const { page } = req.query;
+
+  let curentPage = page ? +page : 1;
+  if (curentPage <= 0) curentPage = 1;
+  const totalPage = await countTotalProductPages();
+
+  const products = await handelGetAllProduct(curentPage);
   return res.render('admin/product/show.ejs', {
     products,
+    totalPage,
+    curentPage,
   });
 };
 export {
