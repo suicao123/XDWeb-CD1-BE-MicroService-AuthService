@@ -14,6 +14,7 @@ import {
 } from 'services/admin/user.service';
 import { getProduct } from 'services/client/item.service';
 import {
+  getProductWithFiilter,
   prodcutFilterWithFactory,
   productMaxPrice,
   productMinPrice,
@@ -35,16 +36,36 @@ const getHomePage = async (req: Request, res: Response) => {
   });
 };
 const getProductFilterPage = async (req: Request, res: Response) => {
-  const { page } = req.query;
+  const {
+    page,
+    factory = '',
+    target = '',
+    price = '',
+    sort = '',
+  } = req.query as {
+    page?: string;
+    factory: string;
+    target: string;
+    price: string;
+    sort: string;
+  };
 
   let curentPage = page ? +page : 1;
   if (curentPage <= 0) curentPage = 1;
-  const totalPages = await countTotalProductClientPages(6);
-  const products = await getProduct(curentPage, 6);
+  const data = await getProductWithFiilter(
+    curentPage,
+    6,
+    factory,
+    target,
+    price,
+    sort,
+  );
+  // const totalPages = await countTotalProductClientPages(6);
+  // const products = await getProduct(curentPage, 6);
   return res.render('client/product/filter', {
-    products,
-    page: curentPage,
-    totalPages,
+    products: data.products,
+    page: +curentPage,
+    totalPages: +data.totalPages,
   });
 };
 
