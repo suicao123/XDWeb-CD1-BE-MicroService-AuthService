@@ -13,6 +13,12 @@ import {
   handleCreateUser,
 } from 'services/admin/user.service';
 import { getProduct } from 'services/client/item.service';
+import {
+  prodcutFilterWithFactory,
+  productMaxPrice,
+  productMinPrice,
+  userFilter,
+} from 'services/client/product.filter';
 
 const getHomePage = async (req: Request, res: Response) => {
   const { page } = req.query;
@@ -34,14 +40,11 @@ const getProductFilterPage = async (req: Request, res: Response) => {
   let curentPage = page ? +page : 1;
   if (curentPage <= 0) curentPage = 1;
   const totalPages = await countTotalProductClientPages(6);
-  const products = await getProduct(curentPage, 8);
-  // return res.render('client/product/filter', {
-  //   products,
-  //   page: curentPage,
-  //   totalPages,
-  // });
-  res.status(200).json({
-    data: products,
+  const products = await getProduct(curentPage, 6);
+  return res.render('client/product/filter', {
+    products,
+    page: curentPage,
+    totalPages,
   });
 };
 
