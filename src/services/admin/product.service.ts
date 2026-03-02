@@ -87,6 +87,11 @@ const countTotalProductPages = async () => {
   const totalPages = Math.ceil(countUsers / pageSize);
   return totalPages;
 };
+const countTotalProductClientPages = async (page: number) => {
+  const countUsers = await prisma.product.count();
+  const totalPages = Math.ceil(countUsers / page);
+  return totalPages;
+};
 export {
   handelCreateProduct,
   handelGetAllProduct,
@@ -94,4 +99,5 @@ export {
   handelUpdateProduct,
   handelDeleteProduct,
   countTotalProductPages,
+  countTotalProductClientPages,
 };

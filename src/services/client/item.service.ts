@@ -1,7 +1,11 @@
 import { prisma } from 'config/client';
 
-const getProduct = async () => {
-  const products = await prisma.product.findMany();
+const getProduct = async (page: number, sizePage: number) => {
+  const skip = (page - 1) * sizePage;
+  const products = await prisma.product.findMany({
+    skip,
+    take: sizePage,
+  });
   return products;
 };
 const addProductToCart = async (

@@ -1,4 +1,8 @@
 import { Request, Response } from 'express';
+import {
+  countTotalProductClientPages,
+  countTotalProductPages,
+} from 'services/admin/product.service';
 
 import {
   getAllRoles,
@@ -11,11 +15,30 @@ import {
 import { getProduct } from 'services/client/item.service';
 
 const getHomePage = async (req: Request, res: Response) => {
-  const products = await getProduct();
-  const user = req.user;
-  console.log('>>>>>> current user: ', user);
+  const { page } = req.query;
+
+  let curentPage = page ? +page : 1;
+  if (curentPage <= 0) curentPage = 1;
+  const totalPages = await countTotalProductClientPages(8);
+
+  const products = await getProduct(curentPage, 8);
   return res.render('client/home/show', {
     products,
+    page: curentPage,
+    totalPages,
+  });
+};
+const getProductFilterPage = async (req: Request, res: Response) => {
+  const { page } = req.query;
+
+  let curentPage = page ? +page : 1;
+  if (curentPage <= 0) curentPage = 1;
+  const totalPages = await countTotalProductClientPages(6);
+  const products = await getProduct(curentPage, 8);
+  return res.render('client/product/filter', {
+    products,
+    page: curentPage,
+    totalPages,
   });
 };
 
@@ -76,4 +99,5 @@ export {
   postDeleteUser,
   getViewUser,
   postUpdateUser,
+  getProductFilterPage,
 };
