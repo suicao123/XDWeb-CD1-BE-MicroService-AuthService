@@ -11,6 +11,7 @@ import configPassportLocal from 'src/middleware/passport.local';
 import session from 'express-session';
 import { PrismaSessionStore } from '@quixo3/prisma-session-store';
 import { PrismaClient } from '@prisma/client';
+import apiRoutes from 'routes/api';
 const app = express();
 const PORT = process.env.PORT || 8080;
 
@@ -56,11 +57,15 @@ app.use((req, res, next) => {
 //config routes
 webRoutes(app);
 
+//api routes
+apiRoutes(app);
+
+innitDatabase();
 //handel 404 notFound
 app.use((req, res) => {
   res.render('status/404');
 });
-innitDatabase();
+
 app.listen(PORT, () => {
   console.log(`My app is running on port:${PORT}`);
   console.log('env port: ' + process.env.PORT);

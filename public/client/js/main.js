@@ -330,4 +330,7 @@
       true,
     );
   }
+  ///////////////////////////////
+  //handel add to cart with ajax
+  
 })(jQuery);
