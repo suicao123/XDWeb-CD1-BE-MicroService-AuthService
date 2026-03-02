@@ -217,7 +217,7 @@
                                         </div>
                                     </div>
                                     <% }) %>
-
+                                    <% if(products?.length){ %>
                                         <div class="pagination d-flex justify-content-center mt-5">
                                             <li class="<%= page === 1 ? 'disabled page-item' : 'page-item' %> ">
                                                 <a class="page-link" href="/products?page=<%= page - 1  %>"
@@ -241,6 +241,9 @@
                                                         </a>
                                                     </li>
                                         </div>
+                                    <% } else{ %>
+                                    <div class="alert alert-danger">không tồn tại sản phẩm</div>
+                                    <%} %>
                             </div>
                         </div>
                     </div>
