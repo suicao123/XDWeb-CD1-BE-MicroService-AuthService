@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { handelGetAllUser } from 'services/client/api.service';
 import { addProductToCart } from 'services/client/item.service';
 
 const postAddProductToCartAPI = async (req: Request, res: Response) => {
@@ -13,6 +14,13 @@ const postAddProductToCartAPI = async (req: Request, res: Response) => {
   res.status(200).json({
     data: newSum,
   });
-  
 };
-export { postAddProductToCartAPI };
+
+const getAllUserAPI = async (req: Request, res: Response) => {
+  const users = await handelGetAllUser();
+
+  res.status(200).json({
+    data: users,
+  });
+};
+export { postAddProductToCartAPI, getAllUserAPI };
