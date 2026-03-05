@@ -1,8 +1,10 @@
 import { Request, Response } from 'express';
+import { handelDeleteUser } from 'services/admin/user.service';
 import {
   handelGetAllUser,
   handelGetUserById,
   handelUpdateUserById,
+  handelUserLogin,
 } from 'services/client/api.service';
 import { registerNewUser } from 'services/client/auth.service';
 import { addProductToCart } from 'services/client/item.service';
@@ -69,10 +71,36 @@ const updateUserById = async (req: Request, res: Response) => {
     data: 'Update user succeed',
   });
 };
+const deleteUserById = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  await handelDeleteUser(id as string);
+
+  res.status(200).json({
+    data: 'Delete user succed',
+  });
+};
+const loginAPI = async (req: Request, res: Response) => {
+  const { username, password } = req.body;
+  try {
+    const access_token = await handelUserLogin(username, password);
+    res.status(200).json({
+      data: {
+        access_token,
+      },
+    });
+  } catch (error) {
+    res.status(401).json({
+      data: null,
+      message: error.message,
+    });
+  }
+};
 export {
   postAddProductToCartAPI,
   getAllUserAPI,
   getUserById,
   createUserAPI,
   updateUserById,
+  deleteUserById,
+  loginAPI,
 };

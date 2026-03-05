@@ -1,5 +1,6 @@
 import { prisma } from 'config/client';
-
+import { comparePassword } from 'services/admin/user.service';
+import jwt from 'jsonwebtoken';
 const handelGetAllUser = async () => {
   return await prisma.user.findMany();
 };
@@ -21,4 +22,32 @@ const handelUpdateUserById = async (
     data: { fullName, address, phone },
   });
 };
-export { handelGetAllUser, handelGetUserById, handelUpdateUserById };
+const handelUserLogin = async (username: string, password: string) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      username,
+    },
+  });
+  if (!user) {
+    throw new Error(`Username:${username} not found`);
+  }
+
+  //compare password
+  const isMatch = await comparePassword(password, user.password);
+  if (!isMatch) {
+    throw new Error('Invalid password');
+  }
+
+  const payload = {
+    id: 1,
+    name: 'MnhQUan',
+  };
+  const access_token = jwt.sign(payload, 'quan', { expiresIn: '1d' });
+  return access_token;
+};
+export {
+  handelGetAllUser,
+  handelGetUserById,
+  handelUpdateUserById,
+  handelUserLogin,
+};
