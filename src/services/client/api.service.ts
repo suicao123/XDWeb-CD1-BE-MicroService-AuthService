@@ -1,6 +1,7 @@
 import { prisma } from 'config/client';
 import { comparePassword } from 'services/admin/user.service';
 import jwt from 'jsonwebtoken';
+import 'dotenv/config';
 const handelGetAllUser = async () => {
   return await prisma.user.findMany();
 };
@@ -39,10 +40,18 @@ const handelUserLogin = async (username: string, password: string) => {
   }
 
   const payload = {
-    id: 1,
-    name: 'MnhQUan',
+    id: user.id,
+    username: user.username,
+    roleId: user.roleId,
+    accountType: user.accountType,
+    avatar: user.avatar,
   };
-  const access_token = jwt.sign(payload, 'quan', { expiresIn: '1d' });
+  const secret = process.env.JWT_SECRET;
+  const expriesIn: any = process.env.JWT_EXPRIRES_IN;
+
+  const access_token = jwt.sign(payload, secret, {
+    expiresIn: expriesIn,
+  });
   return access_token;
 };
 export {

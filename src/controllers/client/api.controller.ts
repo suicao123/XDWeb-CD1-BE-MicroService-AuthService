@@ -29,7 +29,8 @@ const postAddProductToCartAPI = async (req: Request, res: Response) => {
 
 const getAllUserAPI = async (req: Request, res: Response) => {
   const users = await handelGetAllUser();
-
+  const user = req.user;
+  console.log('>>> check user: ', user);
   res.status(200).json({
     data: users,
   });

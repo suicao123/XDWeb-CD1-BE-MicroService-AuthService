@@ -8,11 +8,12 @@ import {
   updateUserById,
 } from 'controllers/client/api.controller';
 import express, { Express } from 'express';
+import { checkValidJWT } from 'src/middleware/jwt.midleware';
 const router = express.Router();
 const apiRoutes = (app: Express) => {
   router.post('/add-product-to-cart', postAddProductToCartAPI);
 
-  router.get('/users', getAllUserAPI);
+  router.get('/users', checkValidJWT, getAllUserAPI);
 
   router.get('/users/:id', getUserById);
   router.post('/users', createUserAPI);
@@ -20,7 +21,7 @@ const apiRoutes = (app: Express) => {
   router.put('/users/:id', updateUserById);
   router.delete('/users/:id', deleteUserById);
 
-router.post('/login', loginAPI);
+  router.post('/login', loginAPI);
 
   app.use('/api', router);
 };
