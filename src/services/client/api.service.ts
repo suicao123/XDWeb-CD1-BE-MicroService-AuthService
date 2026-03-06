@@ -28,6 +28,9 @@ const handelUserLogin = async (username: string, password: string) => {
     where: {
       username,
     },
+    include: {
+      role: true,
+    },
   });
   if (!user) {
     throw new Error(`Username:${username} not found`);
@@ -43,6 +46,7 @@ const handelUserLogin = async (username: string, password: string) => {
     id: user.id,
     username: user.username,
     roleId: user.roleId,
+    role: user.role,
     accountType: user.accountType,
     avatar: user.avatar,
   };
