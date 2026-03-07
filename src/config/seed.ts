@@ -11,7 +11,7 @@ const initDatabase = async () => {
       data: [
         {
           fullName: 'Nguyen Manh Quan',
-          username: 'hoidanit@gmai',
+          username: 'mnhquan0109@gmail.com',
           password: defaultPassword,
           email: 'mnhquan0109@gmail.com',
         },
