@@ -1,31 +1,15 @@
 import {
-  createUserAPI,
-  deleteUserById,
-  fetchAccountAPI,
-  getAllUserAPI,
-  getUserById,
   loginAPI,
-  postAddProductToCartAPI,
-  updateUserById,
+  registerAPI,
+  sendOTP,
 } from 'controllers/client/api.controller';
 import express, { Express } from 'express';
-import { checkValidJWT } from 'src/middleware/jwt.midleware';
+
 const router = express.Router();
 const apiRoutes = (app: Express) => {
-  router.post('/add-product-to-cart', postAddProductToCartAPI);
-
-  router.get('/users', getAllUserAPI);
-
-  router.get('/users/:id', getUserById);
-  router.post('/users', createUserAPI);
-
-  router.put('/users/:id', updateUserById);
-  router.delete('/users/:id', deleteUserById);
-
-  router.get('/account', fetchAccountAPI);
-
-  router.post('/login', loginAPI);
-
-  app.use('/api', checkValidJWT, router);
+  router.post('/auth/login', loginAPI);
+  router.post('/auth/send-otp/', sendOTP);
+  router.post('/auth/register/', registerAPI);
+  app.use('/api', router);
 };
 export default apiRoutes;

@@ -1,50 +1,47 @@
 import { Request, Response } from 'express';
-import { handelDeleteUser } from 'services/admin/user.service';
 import {
-  handelGetAllUser,
-  handelGetUserById,
-  handelUpdateUserById,
+  handelRegisterOTP,
+  handelSendOTP,
   handelUserLogin,
 } from 'services/client/api.service';
-import { registerNewUser } from 'services/client/auth.service';
-import { addProductToCart } from 'services/client/item.service';
 import {
   RegisterSchema,
   TRegisterSchema,
 } from 'src/validation/register.schema';
-
-const postAddProductToCartAPI = async (req: Request, res: Response) => {
-  const { quantity, productId } = req.body;
-  const user = req.user;
-
-  const currentSum = req?.user?.sumCart ?? 0;
-  const newSum = currentSum + +quantity;
-
-  await addProductToCart(quantity, productId, user);
-
-  res.status(200).json({
-    data: newSum,
-  });
+const loginAPI = async (req: Request, res: Response) => {
+  const { username, password } = req.body;
+  try {
+    const { access, refresh, user } = await handelUserLogin(username, password);
+    res.status(200).json({
+      data: {
+        access,
+        refresh,
+        username: user,
+      },
+    });
+  } catch (error) {
+    res.status(401).json({
+      message: error.message,
+    });
+  }
+};
+const sendOTP = async (req: Request, res: Response) => {
+  const { email } = req.body;
+  try {
+    const { message } = await handelSendOTP(email);
+    res.status(200).json({
+      message,
+    });
+  } catch (error) {
+    res.status(400).json({
+      message: error.message,
+    });
+  }
 };
 
-const getAllUserAPI = async (req: Request, res: Response) => {
-  const users = await handelGetAllUser();
-  const user = req.user;
-  console.log('>>> check user: ', user);
-  res.status(200).json({
-    data: users,
-  });
-};
-const getUserById = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const user = await handelGetUserById(+id);
-
-  res.status(200).json({
-    data: user,
-  });
-};
-const createUserAPI = async (req: Request, res: Response) => {
-  const { fullname, username, password } = req.body as TRegisterSchema;
+const registerAPI = async (req: Request, res: Response) => {
+  const { fullname, username, otp, email, password, confirm_password } =
+    req.body as TRegisterSchema;
   const validate = await RegisterSchema.safeParseAsync(req.body);
   if (!validate.success) {
     const errorsZod = validate.error.issues;
@@ -52,65 +49,25 @@ const createUserAPI = async (req: Request, res: Response) => {
       (item) => `${item.message} (${item.path[0]})`,
     );
     res.status(400).json({
-      erros: errors,
+      errors: errors,
     });
     return;
   }
 
   //success
-  await registerNewUser(fullname, username, password);
-  res.status(201).json({
-    data: 'create user succeed',
-  });
-};
-const updateUserById = async (req: Request, res: Response) => {
-  const { fullName, address, phone } = req.body;
-  const { id } = req.params;
-  //success
-  await handelUpdateUserById(+id, fullName, address, phone);
-  res.status(201).json({
-    data: 'Update user succeed',
-  });
-};
-const deleteUserById = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  await handelDeleteUser(id as string);
-
-  res.status(200).json({
-    data: 'Delete user succed',
-  });
-};
-const loginAPI = async (req: Request, res: Response) => {
-  const { username, password } = req.body;
   try {
-    const access_token = await handelUserLogin(username, password);
-    res.status(200).json({
+    await handelRegisterOTP(fullname, email, otp, username, password);
+    res.status(201).json({
       data: {
-        access_token,
+        message: 'Đăng ký thành công',
       },
     });
   } catch (error) {
-    res.status(401).json({
-      data: null,
-      message: error.message,
+    console.error('Register error:', error);
+    res.status(400).json({
+      message: error.message || 'Mã OTP sai hoặc Username đã tồn tại',
     });
   }
 };
-const fetchAccountAPI = async (req: Request, res: Response) => {
-  const user = req.user;
-  res.status(200).json({
-    data: {
-      user,
-    },
-  });
-};
-export {
-  postAddProductToCartAPI,
-  getAllUserAPI,
-  getUserById,
-  createUserAPI,
-  updateUserById,
-  deleteUserById,
-  loginAPI,
-  fetchAccountAPI,
-};
+
+export { loginAPI, sendOTP, registerAPI };
