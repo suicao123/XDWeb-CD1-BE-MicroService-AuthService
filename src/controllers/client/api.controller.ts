@@ -7,7 +7,7 @@ import {
 import {
   RegisterSchema,
   TRegisterSchema,
-} from 'src/validation/register.schema';
+} from '../../validation/register.schema';
 const loginAPI = async (req: Request, res: Response) => {
   const { username, password } = req.body;
   try {
