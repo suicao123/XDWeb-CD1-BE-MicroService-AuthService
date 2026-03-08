@@ -4,9 +4,9 @@
 
 import express from 'express';
 import 'dotenv/config';
-import innitDatabase from 'config/seed';
+import innitDatabase from './config/seed';
 import cors from 'cors';
-import apiRoutes from 'routes/api';
+import apiRoutes from './routes/api';
 const app = express();
 const PORT = process.env.PORT || 8080;
 app.use(cors());
