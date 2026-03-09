@@ -107,7 +107,7 @@ const handelSendOTP = async (email: string) => {
     console.log(`OTP đã được được gửi cho ${email}:${otpCode}`);
   } catch (error) {
     console.error(error);
-    throw new Error('Không thể gửi email. Vui lòng thử lại sau.');
+    throw new Error(error.message);
   }
   return {
     message: 'OTP sent successfully',
