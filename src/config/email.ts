@@ -11,7 +11,7 @@ oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
 async function sendMail(toEmail: string, otp: string, expiresMinutesOTP: number) {
   try {
     // 1. Khởi tạo Gmail Service
-    const gmail = google.gmail({ version: 'v1', auth: oAuth2Client });
+    const gmail = google.gmail({ version: 'v1', auth: oAuth2Client, retryConfig: { retry: 3 } });
 
     // 2. Tạo nội dung Email theo chuẩn MIME
     const subject = 'Mã OTP xác thực tài khoản';
@@ -53,11 +53,16 @@ async function sendMail(toEmail: string, otp: string, expiresMinutesOTP: number)
       requestBody: {
         raw: encodedMessage,
       },
+      timeout: 10000 
     });
 
     console.log("✅ Gửi OTP thành công qua Gmail API! ID:", res.data.id);
   } catch (error) {
-    console.error("❌ Lỗi Gmail API:", error.response?.data || error.message);
+   if (error.code === 'ETIMEDOUT' || error.code === 'ECONNRESET') {
+        console.error("❌ Lỗi kết nối (Timeout/Reset). Kiểm tra lại DNS hoặc Mạng.");
+    } else {
+        console.error("❌ Lỗi Gmail API:", error.response?.data || error.message);
+    }
     throw error;
   }
 }

@@ -1,6 +1,8 @@
 /// <reference path="./types/index.d.ts" />
 
 // const express=require('express')
+import dns from 'node:dns';
+dns.setDefaultResultOrder('ipv4first');
 import 'module-alias/register';
 import express from 'express';
 import 'dotenv/config';
