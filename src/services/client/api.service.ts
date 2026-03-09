@@ -3,7 +3,10 @@ import { comparePassword, hashPassWord } from 'services/hasspass.service';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import otpGenerate from 'otp-generator';
-import transporter from 'config/email';
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 const handelUserLogin = async (username: string, password: string) => {
   const user = await prisma.user.findUnique({
     where: {
@@ -103,7 +106,7 @@ const handelSendOTP = async (email: string) => {
   };
 
   try {
-    await transporter.sendMail(mailOptions);
+    await resend.emails.send(mailOptions);
     console.log(`OTP đã được được gửi cho ${email}:${otpCode}`);
   } catch (error) {
     console.error(error);
