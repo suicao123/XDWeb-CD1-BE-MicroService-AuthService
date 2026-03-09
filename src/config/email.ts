@@ -48,12 +48,11 @@ async function sendMail(toEmail: string, otp: string, expiresMinutesOTP: number)
       .replace(/=+$/, '');
 
     // 4. Gửi mail qua HTTP POST (Cổng 443 - Không bị Render chặn)
-    const res = await gmail.users.messages.send({
+   const res = await gmail.users.messages.send({
       userId: 'me',
-      requestBody: {
-        raw: encodedMessage,
-      },
-      timeout: 10000 
+      requestBody: { raw: encodedMessage },
+    }, {
+      timeout: 10000 // 10 giây timeout
     });
 
     console.log("✅ Gửi OTP thành công qua Gmail API! ID:", res.data.id);
