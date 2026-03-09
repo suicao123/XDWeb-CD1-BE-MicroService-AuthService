@@ -1,7 +1,5 @@
-import nodemailer from 'nodemailer';
-const {google} = require('googleapis');
+import { google } from 'googleapis';
 
-// Force DNS module to prefer IPv4 globally
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const REFRESH_TOKEN = process.env.REFRESH_TOKEN;
@@ -10,51 +8,58 @@ const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
 const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
 oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
 
-// Tạo transporter
 async function sendMail(toEmail: string, otp: string, expiresMinutesOTP: number) {
   try {
-    const accessToken = await oAuth2Client.getAccessToken();
-    const transport = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        type: 'OAuth2',
-        user: 'mnhquan0109@gmail.com',
-        clientId: CLIENT_ID,
-        clientSecret: CLIENT_SECRET,
-        refreshToken: REFRESH_TOKEN,
-        accessToken: accessToken.token,
-      },
-    });
+    // 1. Khởi tạo Gmail Service
+    const gmail = google.gmail({ version: 'v1', auth: oAuth2Client });
 
-    await transport.sendMail({
-      from: 'My App <mnhquan0109@gmail.com>',
-      to: toEmail,
-      subject: 'Mã OTP của bạn',
-      html: `
+    // 2. Tạo nội dung Email theo chuẩn MIME
+    const subject = 'Mã OTP xác thực tài khoản';
+    const utf8Subject = `=?utf-8?B?${Buffer.from(subject).toString('base64')}?=`;
+    
+    const messageParts = [
+      `From: My App <mnhquan0109@gmail.com>`,
+      `To: ${toEmail}`,
+      'Content-Type: text/html; charset=utf-8',
+      'MIME-Version: 1.0',
+      `Subject: ${utf8Subject}`,
+      '',
+      `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2 style="color: #333;">Xác thực tài khoản</h2>
         <p>Mã OTP của bạn là:</p>
         <div style="background-color: #f4f4f4; padding: 15px; text-align: center; font-size: 32px; font-weight: bold; letter-spacing: 5px; color: #007bff;">
           ${otp}
         </div>
-        <p style="color: #666; margin-top: 20p  x;">
+        <p style="color: #666; margin-top: 20px;">
           Mã OTP này sẽ hết hạn sau <strong>${expiresMinutesOTP} phút</strong>.
         </p>
-        <p style="color: #999; font-size: 12px;">
-          Nếu bạn không yêu cầu mã này, vui lòng bỏ qua email này.
-        </p>
       </div>
-    `,
-    });
-    
-    console.log("Gửi thành công ");
-  } catch (error) {
-    console.error(`❌ Email config error connecting to `+ error.message);
+      `,
+    ];
 
+    const message = messageParts.join('\n');
+
+    // 3. Mã hóa Base64URL (bắt buộc theo chuẩn Gmail API)
+    const encodedMessage = Buffer.from(message)
+      .toString('base64')
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=+$/, '');
+
+    // 4. Gửi mail qua HTTP POST (Cổng 443 - Không bị Render chặn)
+    const res = await gmail.users.messages.send({
+      userId: 'me',
+      requestBody: {
+        raw: encodedMessage,
+      },
+    });
+
+    console.log("✅ Gửi OTP thành công qua Gmail API! ID:", res.data.id);
+  } catch (error) {
+    console.error("❌ Lỗi Gmail API:", error.response?.data || error.message);
+    throw error;
   }
 }
-
-// Verify connection
-
 
 export default sendMail;
