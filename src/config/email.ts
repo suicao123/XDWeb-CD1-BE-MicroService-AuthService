@@ -1,10 +1,14 @@
 import nodemailer from 'nodemailer';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
+import dns from 'dns';
+
+// Force DNS resolve IPv4 first (fix ENETUNREACH in Docker)
+dns.setDefaultResultOrder('ipv4first');
 
 // Tạo transporter
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_HOST || 'smtp.gmail.com',
-  port: 587,
+  port: Number(process.env.EMAIL_PORT) || 587,
   secure: false,
   auth: {
     user: process.env.EMAIL_USER,
@@ -14,6 +18,9 @@ const transporter = nodemailer.createTransport({
   family: 4,
   connectionTimeout: 20000,
   greetingTimeout: 20000,
+  tls: {
+    rejectUnauthorized: false,
+  },
 } as SMTPTransport.Options);
 
 // Verify connection
