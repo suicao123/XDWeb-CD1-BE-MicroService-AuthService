@@ -4,9 +4,9 @@
   "description": "nodejs -pro ",
   "main": "app.js",
   "scripts": {
-  "build": "tsc",
+  "build": "tsc && tsc-alias",
   "start": "node dist/app.js",
-  "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/app.ts",
+  "dev": "nodemon -r ts-node/register -r tsconfig-paths/register src/app.ts",
   "test": "echo \"Error: no test specified\" && exit 1"
 },
   "nodemonConfig": {
