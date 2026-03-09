@@ -51,5 +51,5 @@ COPY .env.example .env.example
 # Expose service port
 EXPOSE 4000
 
-# Run Prisma migrations then start the app
-CMD ["sh", "-c", "npx prisma migrate deploy && node dist/app.js"]
+# Run Prisma migrations then start the app (--dns-result-order=ipv4first fix ENETUNREACH)
+CMD ["sh", "-c", "npx prisma migrate deploy && node --dns-result-order=ipv4first dist/app.js"]
