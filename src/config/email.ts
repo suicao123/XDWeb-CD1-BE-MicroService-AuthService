@@ -23,7 +23,7 @@ const ipv4Lookup = (
 const transporter = nodemailer.createTransport({
   host: smtpHost,
   port: smtpPort,
-  secure: false, // true for 465, false for 587
+  secure: smtpPort === 465, // Tự động true nếu dùng port 465, false nếu dùng 587
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASSWORD,
