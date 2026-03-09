@@ -1,7 +1,7 @@
 /// <reference path="./types/index.d.ts" />
 
 // const express=require('express')
-
+import 'module-alias/register';
 import express from 'express';
 import 'dotenv/config';
 import innitDatabase from './config/seed';

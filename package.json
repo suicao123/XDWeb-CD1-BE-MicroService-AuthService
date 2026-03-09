@@ -4,11 +4,10 @@
   "description": "nodejs -pro ",
   "main": "app.js",
   "scripts": {
-    "build": "tsc && tsc-alias",
-    "start": "node dist/app.js",
-    "dev": "nodemon -r ts-node/register -r tsconfig-paths/register src/app.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "build": "tsc",
+  "start": "node dist/app.js",
+  "dev": "nodemon -r tsconfig-paths/register src/app.ts"
+},
   "nodemonConfig": {
     "watch": [
       "src"
@@ -73,5 +72,12 @@
     "tsc-alias": "^1.8.16",
     "tsconfig-paths": "^4.2.0",
     "typescript": "5.7.3"
+  },
+  "_moduleAliases": {
+    "config": "dist/config",
+    "controllers": "dist/controllers",
+    "models": "dist/models",
+    "routes": "dist/routes",
+    "services": "dist/services"
   }
 }
