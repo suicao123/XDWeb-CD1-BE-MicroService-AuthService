@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import otpGenerate from 'otp-generator';
 import { Resend } from 'resend';
+import sendMail from 'config/email';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -84,29 +85,8 @@ const handelSendOTP = async (email: string) => {
   });
 
   //send Email
-  const mailOptions = {
-    from: process.env.EMAIL_FROM,
-    to: email,
-    subject: 'Mã OTP xác thực tài khoản',
-    html: `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #333;">Xác thực tài khoản</h2>
-        <p>Mã OTP của bạn là:</p>
-        <div style="background-color: #f4f4f4; padding: 15px; text-align: center; font-size: 32px; font-weight: bold; letter-spacing: 5px; color: #007bff;">
-          ${otpCode}
-        </div>
-        <p style="color: #666; margin-top: 20px;">
-          Mã OTP này sẽ hết hạn sau <strong>${expiresMinutesOTP} phút</strong>.
-        </p>
-        <p style="color: #999; font-size: 12px;">
-          Nếu bạn không yêu cầu mã này, vui lòng bỏ qua email này.
-        </p>
-      </div>
-    `,
-  };
-
   try {
-    await resend.emails.send(mailOptions);
+    await sendMail(email, otpCode, expiresMinutesOTP);
     console.log(`OTP đã được được gửi cho ${email}:${otpCode}`);
   } catch (error) {
     console.error(error);
