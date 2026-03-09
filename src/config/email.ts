@@ -1,23 +1,12 @@
 import nodemailer from 'nodemailer';
 import dns from 'dns';
+import net from 'net';
+
+// Force DNS module to prefer IPv4 globally
+dns.setDefaultResultOrder('ipv4first');
 
 const smtpHost = process.env.EMAIL_HOST || 'smtp.gmail.com';
 const smtpPort = Number(process.env.EMAIL_PORT) || 587;
-
-// Custom lookup function using dns.resolve4 to GUARANTEE IPv4 address
-const ipv4Lookup = (
-  hostname: string,
-  options: dns.LookupOptions,
-  callback: (err: NodeJS.ErrnoException | null, address: string, family: number) => void
-) => {
-  dns.resolve4(hostname, (err, addresses) => {
-    if (err || addresses.length === 0) {
-      return callback(err || new Error(`No IPv4 address found for ${hostname}`), '', 4);
-    }
-    // Return the first matched IPv4 address
-    callback(null, addresses[0], 4);
-  });
-};
 
 // Tạo transporter
 const transporter = nodemailer.createTransport({
@@ -28,11 +17,11 @@ const transporter = nodemailer.createTransport({
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASSWORD,
   },
-  requireTLS: true,
+  requireTLS: smtpPort !== 465,
   connectionTimeout: 20000,
   greetingTimeout: 20000,
-  // Đưa lookup trực tiếp vào cấu hình connection
-  lookup: ipv4Lookup,
+  // Force IPv4 connection
+  family: 4,
   tls: {
     rejectUnauthorized: false,
     servername: smtpHost,
